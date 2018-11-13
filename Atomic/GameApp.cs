@@ -16,7 +16,7 @@ namespace Atomic
         private SpriteFont _font;
 
 #if DEBUG
-        private int? _electrons = 4;
+        private int? _electrons = null;
 #else
         private int? _electrons = null;
 #endif
@@ -40,8 +40,8 @@ namespace Atomic
 
             _grid = new AtomsGrid(_contents, 64, 10, 10);
 
-            _currentAtom = _grid.CreateAtom(4);
-            _nextAtom = _grid.CreateAtom(4);
+            _currentAtom = _grid.CreateAtom(_electrons);
+            _nextAtom = _grid.CreateAtom(_electrons);
 
             _renderer = new GridRenderer(_grid);
         }
