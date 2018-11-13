@@ -1,0 +1,28 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\..\TileMore\PureFreak.TileMore.Content\bin\Debug\PureFreak.TileMore.Content.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Atoms.xml
+/importer:TexturePackerXmlImporter
+/processor:TextureAtlasProcessor
+/build:Atoms.xml
+
+#begin Default.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Default.spritefont
+
