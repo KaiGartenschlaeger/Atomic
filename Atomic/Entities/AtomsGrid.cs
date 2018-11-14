@@ -10,11 +10,11 @@ namespace Atomic.Entities
         private readonly Contents _contents;
         private readonly GameSession _session;
         private readonly int _tileSize;
-        private readonly int _tilesWidth;
-        private readonly int _tilesHeight;
+        private readonly int _width;
+        private readonly int _height;
         private readonly GridAtom[,] _atoms;
 
-        public AtomsGrid(Contents contents, GameSession session, int tileSize, int tilesWidth, int tilesHeight)
+        public AtomsGrid(Contents contents, GameSession session, int cellSize, int width, int height)
         {
             if (contents == null)
                 throw new ArgumentNullException(nameof(contents));
@@ -23,10 +23,10 @@ namespace Atomic.Entities
 
             _contents = contents;
             _session = session;
-            _tileSize = tileSize;
-            _tilesWidth = tilesWidth;
-            _tilesHeight = tilesHeight;
-            _atoms = new GridAtom[tilesWidth, tilesHeight];
+            _tileSize = cellSize;
+            _width = width;
+            _height = height;
+            _atoms = new GridAtom[width, height];
         }
 
         public Atom CreateAtom(int? electrons = null)
@@ -55,6 +55,17 @@ namespace Atomic.Entities
             }
 
             return false;
+        }
+
+        public void Clear()
+        {
+            for (int gridX = 0; gridX < _width; gridX++)
+            {
+                for (int gridY = 0; gridY < _height; gridY++)
+                {
+                    _atoms[gridX, gridY] = null;
+                }
+            }
         }
 
         private void AtomAdded(GridAtom addedAtom)
@@ -144,8 +155,8 @@ namespace Atomic.Entities
             return
                 gridX >= 0 &&
                 gridY >= 0 &&
-                gridX < _tilesWidth &&
-                gridY < _tilesHeight;
+                gridX < _width &&
+                gridY < _height;
         }
 
         public int TileSize
@@ -158,24 +169,24 @@ namespace Atomic.Entities
             get { return _atoms; }
         }
 
-        public int TilesWidth
-        {
-            get { return _tilesWidth; }
-        }
-
-        public int TilesHeight
-        {
-            get { return _tilesHeight; }
-        }
-
         public int Width
         {
-            get { return _tilesWidth * _tileSize; }
+            get { return _width; }
         }
 
         public int Height
         {
-            get { return _tilesHeight * _tileSize; }
+            get { return _height; }
+        }
+
+        public int PixelWidth
+        {
+            get { return _width * _tileSize; }
+        }
+
+        public int PixelHeight
+        {
+            get { return _height * _tileSize; }
         }
 
         public Contents Contents

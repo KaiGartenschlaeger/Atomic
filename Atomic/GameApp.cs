@@ -32,13 +32,6 @@ namespace Atomic
         private BitmapFont _font;
         private GameSession _session;
 
-
-#if DEBUG
-        private int? _electrons = null;
-#else
-        private int? _electrons = null;
-#endif
-
         public GameApp()
             : base(WindowWidth, WindowHeight)
         {
@@ -60,8 +53,8 @@ namespace Atomic
 
             _grid = new AtomsGrid(_contents, _session, GridTileSize, GridWidth, GridHeight);
 
-            _currentAtom = _grid.CreateAtom(_electrons);
-            _nextAtom = _grid.CreateAtom(_electrons);
+            _currentAtom = _grid.CreateAtom();
+            _nextAtom = _grid.CreateAtom();
 
             _renderer = new GridRenderer(_grid, _session);
         }
@@ -79,8 +72,8 @@ namespace Atomic
                 Mouse.IsButtonPressed(MouseButton.Left) &&
                 Mouse.Position.X >= GridX &&
                 Mouse.Position.Y >= GridY &&
-                Mouse.Position.X <= GridX + _grid.Width &&
-                Mouse.Position.Y <= GridY + _grid.Height)
+                Mouse.Position.X <= GridX + _grid.PixelWidth &&
+                Mouse.Position.Y <= GridY + _grid.PixelHeight)
             {
                 var tileX = (Mouse.Position.X - GridX) / _grid.TileSize;
                 var tileY = (Mouse.Position.Y - GridY) / _grid.TileSize;
@@ -88,11 +81,13 @@ namespace Atomic
                 if (_grid.SetAtom(tileX, tileY, _currentAtom))
                 {
                     _currentAtom = _nextAtom;
-                    _nextAtom = _grid.CreateAtom(_electrons);
+                    _nextAtom = _grid.CreateAtom();
                 }
             }
 
+#if CHEATS_ENABLED
             var electrons = -1;
+
             if (Keyboard.IsKeyReleased(Keys.D1)) electrons = 1;
             else if (Keyboard.IsKeyReleased(Keys.D2)) electrons = 2;
             else if (Keyboard.IsKeyReleased(Keys.D3)) electrons = 3;
@@ -100,6 +95,10 @@ namespace Atomic
 
             if (_currentAtom != null && electrons != -1)
                 _currentAtom.Electrons = electrons;
+
+            if (Keyboard.IsKeyReleased(Keys.R))
+                _grid.Clear();
+#endif
 
             _renderer.Update(time);
         }
@@ -131,8 +130,8 @@ namespace Atomic
             // current/next atom
             y = WindowHeight - ScreenPadding - PreviewBoxHeight - _font.Data.LineHeight - 8;
 
-            Batch.DrawBitmapFont(_font, new Vector2(GridRight, y), "Current:", Colors.Descriptions);
-            Batch.DrawBitmapFont(_font, new Vector2(GridRight + PreviewBoxWidth + PreviewBoxPadding, y), "Next:", Colors.Descriptions);
+            Batch.DrawBitmapFont(_font, new Vector2(GridRight, y), "Current", Colors.Descriptions);
+            Batch.DrawBitmapFont(_font, new Vector2(GridRight + PreviewBoxWidth + PreviewBoxPadding, y), "Next", Colors.Descriptions);
             y += _font.Data.LineHeight + 8;
 
             Batch.DrawRect(new Rectangle(GridRight, y, PreviewBoxWidth, PreviewBoxHeight), 1, Colors.PreviewBorder);
@@ -147,8 +146,8 @@ namespace Atomic
             if (_currentAtom != null &&
                 Mouse.Position.X >= GridX &&
                 Mouse.Position.Y >= GridY &&
-                Mouse.Position.X <= GridX + _grid.Width &&
-                Mouse.Position.Y <= GridY + _grid.Height)
+                Mouse.Position.X <= GridX + _grid.PixelWidth &&
+                Mouse.Position.Y <= GridY + _grid.PixelHeight)
             {
                 var tileX = (Mouse.Position.X - GridX) / _grid.TileSize;
                 var tileY = (Mouse.Position.Y - GridY) / _grid.TileSize;

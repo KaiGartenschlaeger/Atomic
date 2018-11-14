@@ -23,9 +23,9 @@ namespace Atomic.Entities
 
         public void Update(GameTime time)
         {
-            for (int gridX = 0; gridX < _grid.TilesWidth; gridX++)
+            for (int gridX = 0; gridX < _grid.Width; gridX++)
             {
-                for (int gridY = 0; gridY < _grid.TilesHeight; gridY++)
+                for (int gridY = 0; gridY < _grid.Height; gridY++)
                 {
                     var atom = _grid.Atoms[gridX, gridY];
                     if (atom != null)
@@ -45,7 +45,7 @@ namespace Atomic.Entities
 
         public void Draw(SpriteBatch batch, Vector2 pos)
         {
-            for (int gridX = 0; gridX < _grid.TilesWidth; gridX++)
+            for (int gridX = 0; gridX < _grid.Width; gridX++)
             {
                 if (gridX > 0)
                     batch.DrawLine(
@@ -54,11 +54,11 @@ namespace Atomic.Entities
                             pos.Y),
                         new Vector2(
                             pos.X + gridX * _grid.TileSize,
-                            pos.Y + _grid.Height),
+                            pos.Y + _grid.PixelHeight),
                         1,
                         Colors.GridCellBorder);
 
-                for (int gridY = 0; gridY < _grid.TilesHeight; gridY++)
+                for (int gridY = 0; gridY < _grid.Height; gridY++)
                 {
                     if (gridX == 0 && gridY > 0)
                     {
@@ -67,7 +67,7 @@ namespace Atomic.Entities
                                 pos.X,
                                 pos.Y + gridY * _grid.TileSize),
                             new Vector2(
-                                pos.X + _grid.Width,
+                                pos.X + _grid.PixelWidth,
                                 pos.Y + gridY * _grid.TileSize),
                             1,
                             Colors.GridCellBorder);
@@ -86,7 +86,7 @@ namespace Atomic.Entities
                 }
             }
 
-            batch.DrawRect(pos, new Size(_grid.Width, _grid.Height), 4, Colors.GridBorder);
+            batch.DrawRect(pos, new Size(_grid.PixelWidth, _grid.PixelHeight), 4, Colors.GridBorder);
         }
 
         private void RenderConnections(SpriteBatch batch, Vector2 pos, GridAtom atom)
