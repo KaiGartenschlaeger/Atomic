@@ -40,8 +40,7 @@ namespace Atomic.Entities
             {
                 _atoms[gridX, gridY] = new GridAtom(this, gridX, gridY, atom.Electrons);
 
-                RefreshGrid();
-                RefreshMolecules();
+                AtomAdded(_atoms[gridX, gridY]);
 
                 return true;
             }
@@ -49,22 +48,16 @@ namespace Atomic.Entities
             return false;
         }
 
-        private void RefreshGrid()
+        private void AtomAdded(GridAtom addedAtom)
         {
-            for (int gridX = 0; gridX < _tilesWidth; gridX++)
+            for (int gridX = addedAtom.GridX - 1; gridX < addedAtom.GridX + 1; gridX++)
             {
-                for (int gridY = 0; gridY < _tilesHeight; gridY++)
+                for (int gridY = addedAtom.GridY - 1; gridY < addedAtom.GridY + 1; gridY++)
                 {
-                    var atom = _atoms[gridX, gridY];
-                    if (atom != null)
-                        atom.RefreshNeighbours();
+                    var atom = GetAtom(gridX, gridY);
+                    if (atom != null) atom.RefreshNeighbours();
                 }
             }
-        }
-
-        private void RefreshMolecules()
-        {
-
         }
 
         public GridAtom GetAtom(int gridX, int gridY)
