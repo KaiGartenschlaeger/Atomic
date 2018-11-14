@@ -26,3 +26,8 @@
 /processorParam:TextureFormat=Compressed
 /build:Default.spritefont
 
+#begin ArialRounded18pt.fnt
+/importer:ShoeBoxTxtFontImporter
+/processor:BitmapFontProcessor
+/build:ArialRounded18pt.fnt
+

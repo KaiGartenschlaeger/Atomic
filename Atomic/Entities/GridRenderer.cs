@@ -8,31 +8,43 @@ namespace Atomic.Entities
     public class GridRenderer
     {
         private readonly AtomsGrid _grid;
+        private readonly GameSession _session;
 
-        public GridRenderer(AtomsGrid grid)
+        public GridRenderer(AtomsGrid grid, GameSession session)
         {
             if (grid == null)
                 throw new ArgumentNullException(nameof(grid));
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
 
             _grid = grid;
+            _session = session;
         }
 
         public void Update(GameTime time)
         {
-            for (int x = 0; x < _grid.TilesWidth; x++)
+            for (int gridX = 0; gridX < _grid.TilesWidth; gridX++)
             {
-                for (int y = 0; y < _grid.TilesHeight; y++)
+                for (int gridY = 0; gridY < _grid.TilesHeight; gridY++)
                 {
-                    if (_grid.Atoms[x, y] != null)
-                        _grid.Atoms[x, y].Update(time);
+                    var atom = _grid.Atoms[gridX, gridY];
+                    if (atom != null)
+                    {
+                        atom.Update(time);
+
+                        if (atom.IsCompleted)
+                        {
+                            atom.Scale -= time.ElapsedSeconds() * 0.7f;
+                            if (atom.Scale <= 0.2f)
+                                _grid.Atoms[gridX, gridY] = null;
+                        }
+                    }
                 }
             }
         }
 
         public void Draw(SpriteBatch batch, Vector2 pos)
         {
-            batch.DrawRect(pos, new Size(_grid.Width, _grid.Height), 4, Color.Gray);
-
             for (int gridX = 0; gridX < _grid.TilesWidth; gridX++)
             {
                 if (gridX > 0)
@@ -44,11 +56,11 @@ namespace Atomic.Entities
                             pos.X + gridX * _grid.TileSize,
                             pos.Y + _grid.Height),
                         1,
-                        Color.Gray);
+                        Colors.GridCellBorder);
 
                 for (int gridY = 0; gridY < _grid.TilesHeight; gridY++)
                 {
-                    if (gridX == 0)
+                    if (gridX == 0 && gridY > 0)
                     {
                         batch.DrawLine(
                             new Vector2(
@@ -58,7 +70,7 @@ namespace Atomic.Entities
                                 pos.X + _grid.Width,
                                 pos.Y + gridY * _grid.TileSize),
                             1,
-                            Color.Gray);
+                            Colors.GridCellBorder);
                     }
 
                     var atom = _grid.Atoms[gridX, gridY];
@@ -73,6 +85,8 @@ namespace Atomic.Entities
                     }
                 }
             }
+
+            batch.DrawRect(pos, new Size(_grid.Width, _grid.Height), 4, Colors.GridBorder);
         }
 
         private void RenderConnections(SpriteBatch batch, Vector2 pos, GridAtom atom)

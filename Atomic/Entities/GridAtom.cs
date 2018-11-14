@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Diagnostics;
 
 namespace Atomic.Entities
@@ -93,6 +94,11 @@ namespace Atomic.Entities
             get { return _gridY; }
         }
 
+        public Point GridPos
+        {
+            get { return new Point(_gridX, _gridY); }
+        }
+
         public GridAtom LeftAtom
         {
             get { return _grid.GetAtom(_gridX - 1, _gridY); }
@@ -117,6 +123,8 @@ namespace Atomic.Entities
         public GridAtom RightConnection { get; private set; }
         public GridAtom BottomConnection { get; private set; }
         public GridAtom TopConnection { get; private set; }
+
+        public bool IsCompleted { get; set; }
 
         public override string ToString()
         {

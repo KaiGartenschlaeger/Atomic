@@ -49,7 +49,9 @@
   <ItemGroup>
     <Compile Include="Entities\Atom.cs" />
     <Compile Include="Entities\AtomsGrid.cs" />
-    <Compile Include="Entities\Contents.cs" />
+    <Compile Include="Colors.cs" />
+    <Compile Include="Contents.cs" />
+    <Compile Include="Entities\GameSession.cs" />
     <Compile Include="Entities\GridAtom.cs" />
     <Compile Include="Entities\GridRenderer.cs" />
     <Compile Include="GameApp.cs" />

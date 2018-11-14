@@ -8,7 +8,9 @@ namespace Atomic.Entities
     public class Atom
     {
         private readonly Contents _contents;
-        private int _electrons;
+        private int _electronsCount;
+        private float _scale = 1f;
+        private float _rotation = 0f;
 
         public Atom(Contents contents, int electrons)
         {
@@ -18,19 +20,19 @@ namespace Atomic.Entities
                 throw new ArgumentException("Electrons must be a value between 0 and 4");
 
             _contents = contents;
-            _electrons = electrons;
+            _electronsCount = electrons;
         }
 
         public void Update(GameTime time)
         {
-            Rotation += time.ElapsedSeconds() * 3;
+            Rotation += time.ElapsedSeconds() * Angle.PiOver2;
         }
 
         public void Draw(SpriteBatch batch, Vector2 pos, Color? color = null)
         {
             if (!color.HasValue)
             {
-                switch (_electrons)
+                switch (_electronsCount)
                 {
                     case 0:
                         color = Color.LightGreen;
@@ -53,7 +55,7 @@ namespace Atomic.Entities
                 }
             }
 
-            var region = _contents.AtomRegions[_electrons];
+            var region = _contents.AtomRegions[_electronsCount];
 
             batch.Draw(
                 region.Atlas.Textures[region.TextureIndex],
@@ -62,17 +64,27 @@ namespace Atomic.Entities
                 color.Value,
                 Rotation,
                 region.Origin,
-                1f,
+                Scale,
                 SpriteEffects.None,
                 1f);
         }
 
         public int Electrons
         {
-            get { return _electrons; }
-            set { _electrons = MathI.Clamp(value, 0, 4); }
+            get { return _electronsCount; }
+            set { _electronsCount = MathI.Clamp(value, 0, 4); }
         }
 
-        public float Rotation { get; set; }
+        public float Rotation
+        {
+            get { return _rotation; }
+            set { _rotation = value % Angle.TwoPi; }
+        }
+
+        public float Scale
+        {
+            get { return _scale; }
+            set { _scale = MathF.Clamp(value, 0f, 1f); }
+        }
     }
 }

@@ -1,19 +1,28 @@
-﻿using PureFreak.TileMore;
+﻿using Microsoft.Xna.Framework;
+using PureFreak.TileMore;
 using System;
+using System.Collections.Generic;
 
 namespace Atomic.Entities
 {
     public class AtomsGrid
     {
         private readonly Contents _contents;
+        private readonly GameSession _session;
         private readonly int _tileSize;
         private readonly int _tilesWidth;
         private readonly int _tilesHeight;
         private readonly GridAtom[,] _atoms;
 
-        public AtomsGrid(Contents contents, int tileSize, int tilesWidth, int tilesHeight)
+        public AtomsGrid(Contents contents, GameSession session, int tileSize, int tilesWidth, int tilesHeight)
         {
+            if (contents == null)
+                throw new ArgumentNullException(nameof(contents));
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
+
             _contents = contents;
+            _session = session;
             _tileSize = tileSize;
             _tilesWidth = tilesWidth;
             _tilesHeight = tilesHeight;
@@ -58,6 +67,63 @@ namespace Atomic.Entities
                     if (atom != null) atom.RefreshNeighbours();
                 }
             }
+
+            CheckMolecule(addedAtom);
+        }
+
+        private bool CheckMolecule(GridAtom startAtom)
+        {
+            if (startAtom.Electrons > 0)
+                return false;
+
+            var moleculeAtoms = new HashSet<Point>();
+            var openList = new Stack<Point>();
+            var closedList = new HashSet<Point>();
+
+            openList.Push(startAtom.GridPos);
+            while (openList.Count > 0)
+            {
+                var currentPos = openList.Pop();
+                var currentAtom = GetAtom(currentPos.X, currentPos.Y);
+
+                if (currentAtom.Electrons > 0)
+                    return false;
+
+                closedList.Add(currentPos);
+                moleculeAtoms.Add(currentPos);
+
+                if (currentAtom.LeftConnection != null && !closedList.Contains(currentAtom.LeftConnection.GridPos))
+                    openList.Push(currentAtom.LeftConnection.GridPos);
+                if (currentAtom.RightConnection != null && !closedList.Contains(currentAtom.RightConnection.GridPos))
+                    openList.Push(currentAtom.RightConnection.GridPos);
+                if (currentAtom.TopConnection != null && !closedList.Contains(currentAtom.TopConnection.GridPos))
+                    openList.Push(currentAtom.TopConnection.GridPos);
+                if (currentAtom.BottomConnection != null && !closedList.Contains(currentAtom.BottomConnection.GridPos))
+                    openList.Push(currentAtom.BottomConnection.GridPos);
+            }
+
+            MoleculeCompleted(moleculeAtoms);
+            return true;
+        }
+
+        private void MoleculeCompleted(HashSet<Point> moleculeAtoms)
+        {
+            var count = 0;
+            var points = 1;
+
+            foreach (var gridPos in moleculeAtoms)
+            {
+                count++;
+                if (count > 3) points++;
+
+                var atom = _atoms[gridPos.X, gridPos.Y];
+                atom.IsCompleted = true;
+
+                _session.Score += points;
+            }
+
+            _session.Atoms += moleculeAtoms.Count;
+            _session.Molecules++;
         }
 
         public GridAtom GetAtom(int gridX, int gridY)

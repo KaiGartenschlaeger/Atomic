@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using PureFreak.TileMore.Graphics;
 
-namespace Atomic.Entities
+namespace Atomic
 {
     public class Contents
     {
