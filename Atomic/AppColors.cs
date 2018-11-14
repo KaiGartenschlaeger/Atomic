@@ -2,7 +2,7 @@
 
 namespace Atomic
 {
-    internal static class Colors
+    internal static class AppColors
     {
         public static readonly Color WindowBackground = new Color(40, 40, 40);
 

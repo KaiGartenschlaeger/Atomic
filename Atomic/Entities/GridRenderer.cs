@@ -56,7 +56,7 @@ namespace Atomic.Entities
                             pos.X + gridX * _grid.TileSize,
                             pos.Y + _grid.PixelHeight),
                         1,
-                        Colors.GridCellBorder);
+                        AppColors.GridCellBorder);
 
                 for (int gridY = 0; gridY < _grid.Height; gridY++)
                 {
@@ -70,7 +70,7 @@ namespace Atomic.Entities
                                 pos.X + _grid.PixelWidth,
                                 pos.Y + gridY * _grid.TileSize),
                             1,
-                            Colors.GridCellBorder);
+                            AppColors.GridCellBorder);
                     }
 
                     var atom = _grid.Atoms[gridX, gridY];
@@ -86,7 +86,7 @@ namespace Atomic.Entities
                 }
             }
 
-            batch.DrawRect(pos, new Size(_grid.PixelWidth, _grid.PixelHeight), 4, Colors.GridBorder);
+            batch.DrawRect(pos, new Size(_grid.PixelWidth, _grid.PixelHeight), 4, AppColors.GridBorder);
         }
 
         private void RenderConnections(SpriteBatch batch, Vector2 pos, GridAtom atom)

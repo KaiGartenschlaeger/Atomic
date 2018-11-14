@@ -7,12 +7,12 @@ namespace Atomic.Entities
 {
     public class Atom
     {
-        private readonly Contents _contents;
+        private readonly AppContents _contents;
         private int _electronsCount;
         private float _scale = 1f;
         private float _rotation = 0f;
 
-        public Atom(Contents contents, int electrons)
+        public Atom(AppContents contents, int electrons)
         {
             if (contents == null)
                 throw new ArgumentNullException(nameof(contents));

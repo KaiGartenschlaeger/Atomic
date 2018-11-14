@@ -19,13 +19,6 @@
 /processor:TextureAtlasProcessor
 /build:Atoms.xml
 
-#begin Default.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Default.spritefont
-
 #begin ArialRounded18pt.fnt
 /importer:ShoeBoxTxtFontImporter
 /processor:BitmapFontProcessor

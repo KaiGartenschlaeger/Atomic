@@ -7,14 +7,14 @@ namespace Atomic.Entities
 {
     public class AtomsGrid
     {
-        private readonly Contents _contents;
+        private readonly AppContents _contents;
         private readonly GameSession _session;
         private readonly int _tileSize;
         private readonly int _width;
         private readonly int _height;
         private readonly GridAtom[,] _atoms;
 
-        public AtomsGrid(Contents contents, GameSession session, int cellSize, int width, int height)
+        public AtomsGrid(AppContents contents, GameSession session, int cellSize, int width, int height)
         {
             if (contents == null)
                 throw new ArgumentNullException(nameof(contents));
@@ -189,7 +189,7 @@ namespace Atomic.Entities
             get { return _height * _tileSize; }
         }
 
-        public Contents Contents
+        public AppContents Contents
         {
             get { return _contents; }
         }
