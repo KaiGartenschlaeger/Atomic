@@ -34,16 +34,27 @@ namespace Atomic.Screens
 
         #endregion
 
+        #region Public methods
+
+        public void NewGame()
+        {
+            Session.Reset();
+            Grid.Clear();
+
+            CurrentAtom = Grid.CreateAtom();
+            NextAtom = Grid.CreateAtom();
+        }
+
+        #endregion
+
         #region Screen methods
 
         protected override void OnStart()
         {
             Session = new GameSession();
+
             Grid = new AtomsGrid(AppContents, Session, AppConstants.GridTileSize, AppConstants.GridWidth, AppConstants.GridHeight);
             GridRenderer = new GridRenderer(Grid, Session);
-
-            CurrentAtom = Grid.CreateAtom();
-            NextAtom = Grid.CreateAtom();
         }
 
         protected override void OnUpdate(GameTime time, int updateCounter)
@@ -53,6 +64,11 @@ namespace Atomic.Screens
             if (NextAtom != null)
                 NextAtom.Update(time);
 
+            GridRenderer.Update(time);
+        }
+
+        protected override void OnInput(GameTime time, int updateCounter)
+        {
             if (CurrentAtom != null &&
                 IsMouseOverGrid() &&
                 Mouse.IsButtonPressed(MouseButton.Left))
@@ -65,11 +81,12 @@ namespace Atomic.Screens
                 }
             }
 
+            if (Keyboard.IsKeyReleased(Keys.Escape))
+                Manager.Activate<GameMenuScreen>();
+
 #if CHEATS_ENABLED
             HandleCheats();
 #endif
-
-            GridRenderer.Update(time);
         }
 
         private void HandleCheats()
@@ -128,7 +145,7 @@ namespace Atomic.Screens
                 NextAtom.Draw(Batch, new Vector2(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding + AppConstants.PreviewBoxWidth / 2, y + AppConstants.PreviewBoxHeight / 2));
 
             // atom grid preview
-            if (CurrentAtom != null && IsMouseOverGrid())
+            if (CurrentAtom != null && IsMouseOverGrid() && IsOnTop)
             {
                 var gridPos = GetMouseGridPos();
 

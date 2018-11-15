@@ -61,6 +61,8 @@
     <Compile Include="Screens\GameMenuScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
+    <Compile Include="UI\TextMenu.cs" />
+    <Compile Include="UI\TextMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, processorArchitecture=MSIL">

@@ -23,5 +23,8 @@ namespace Atomic
         public static readonly Color Atom2 = ColorHelper.FromHexString("dadc5c");
         public static readonly Color Atom3 = ColorHelper.FromHexString("dc9c13");
         public static readonly Color Atom4 = ColorHelper.FromHexString("dc2525");
+
+        public static readonly Color MenuItems = new Color(140, 140, 140);
+        public static readonly Color MenuItemsHover = new Color(220, 220, 220);
     }
 }

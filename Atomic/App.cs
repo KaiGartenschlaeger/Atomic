@@ -23,7 +23,7 @@ namespace Atomic
             _screenManager.Register<GameScreen>();
             _screenManager.Register<GameMenuScreen>();
 
-            _screenManager.SwitchTo<GameScreen>();
+            _screenManager.SwitchTo<StartMenuScreen>();
 
             base.Initialize();
         }

@@ -20,5 +20,9 @@
 
         public const int WindowWidth = ScreenPadding + GridWidth * GridTileSize + ScreenPadding + SidebarWidth + ScreenPadding;
         public const int WindowHeight = GridHeight * GridTileSize + ScreenPadding * 2;
+
+        public const int MenuPadding = 8;
+        public const int MenuX = 200;
+        public const int MenuY = 150;
     }
 }
