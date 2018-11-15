@@ -197,7 +197,7 @@
             <key type="filename">Atom1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.632653,0.5</point_f>
+                <point_f>0.5,0.613636</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -210,7 +210,7 @@
             <key type="filename">Atom2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0.5,0.490566</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
@@ -223,7 +223,7 @@
             <key type="filename">Atom3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.563636,0.407407</point_f>
+                <point_f>0.613636,0.510638</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
