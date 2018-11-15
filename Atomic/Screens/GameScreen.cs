@@ -9,6 +9,31 @@ namespace Atomic.Screens
 {
     public class GameScreen : Screen
     {
+        #region Grid helper
+
+        private bool IsMouseOverGrid()
+        {
+            return
+                Mouse.Position.X >= AppConstants.GridX &&
+                Mouse.Position.Y >= AppConstants.GridY &&
+                Mouse.Position.X <= AppConstants.GridX + Grid.PixelWidth &&
+                Mouse.Position.Y <= AppConstants.GridY + Grid.PixelHeight;
+        }
+
+        private Point GetMouseGridPos()
+        {
+            if (IsMouseOverGrid())
+            {
+                return new Point(
+                    (Mouse.Position.X - AppConstants.GridX) / Grid.TileSize,
+                    (Mouse.Position.Y - AppConstants.GridY) / Grid.TileSize);
+            }
+
+            return new Point(-1, -1);
+        }
+
+        #endregion
+
         #region Screen methods
 
         protected override void OnStart()
@@ -29,16 +54,11 @@ namespace Atomic.Screens
                 NextAtom.Update(time);
 
             if (CurrentAtom != null &&
-                Mouse.IsButtonPressed(MouseButton.Left) &&
-                Mouse.Position.X >= AppConstants.GridX &&
-                Mouse.Position.Y >= AppConstants.GridY &&
-                Mouse.Position.X <= AppConstants.GridX + Grid.PixelWidth &&
-                Mouse.Position.Y <= AppConstants.GridY + Grid.PixelHeight)
+                IsMouseOverGrid() &&
+                Mouse.IsButtonPressed(MouseButton.Left))
             {
-                var tileX = (Mouse.Position.X - AppConstants.GridX) / Grid.TileSize;
-                var tileY = (Mouse.Position.Y - AppConstants.GridY) / Grid.TileSize;
-
-                if (Grid.SetAtom(tileX, tileY, CurrentAtom))
+                var gridPos = GetMouseGridPos();
+                if (Grid.SetAtom(gridPos.X, gridPos.Y, CurrentAtom))
                 {
                     CurrentAtom = NextAtom;
                     NextAtom = Grid.CreateAtom();
@@ -46,7 +66,14 @@ namespace Atomic.Screens
             }
 
 #if CHEATS_ENABLED
+            HandleCheats();
+#endif
 
+            GridRenderer.Update(time);
+        }
+
+        private void HandleCheats()
+        {
             var electrons = -1;
 
             if (Keyboard.IsKeyReleased(Keys.D1)) electrons = 1;
@@ -59,10 +86,6 @@ namespace Atomic.Screens
 
             if (Keyboard.IsKeyReleased(Keys.R))
                 Grid.Clear();
-
-#endif
-
-            GridRenderer.Update(time);
         }
 
         protected override void OnDraw(SpriteBatch batch)
@@ -105,21 +128,26 @@ namespace Atomic.Screens
                 NextAtom.Draw(Batch, new Vector2(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding + AppConstants.PreviewBoxWidth / 2, y + AppConstants.PreviewBoxHeight / 2));
 
             // atom grid preview
-            if (CurrentAtom != null &&
-                Mouse.Position.X >= AppConstants.GridX &&
-                Mouse.Position.Y >= AppConstants.GridY &&
-                Mouse.Position.X <= AppConstants.GridX + Grid.PixelWidth &&
-                Mouse.Position.Y <= AppConstants.GridY + Grid.PixelHeight)
+            if (CurrentAtom != null && IsMouseOverGrid())
             {
-                var tileX = (Mouse.Position.X - AppConstants.GridX) / Grid.TileSize;
-                var tileY = (Mouse.Position.Y - AppConstants.GridY) / Grid.TileSize;
+                var gridPos = GetMouseGridPos();
 
-                if (Grid.IsValidPos(tileX, tileY) && !Grid.HasAtom(tileX, tileY))
+                if (Grid.IsValidPos(gridPos.X, gridPos.Y) && !Grid.HasAtom(gridPos.X, gridPos.Y))
                 {
-                    CurrentAtom.Draw(Batch, new Vector2(
-                        AppConstants.GridX + tileX * Grid.TileSize + Grid.TileSize / 2,
-                        AppConstants.GridY + tileY * Grid.TileSize + Grid.TileSize / 2),
-                        Color.LightGray);
+                    if (Grid.CanSet(gridPos.X, gridPos.Y, CurrentAtom))
+                    {
+                        CurrentAtom.Draw(Batch, new Vector2(
+                            AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
+                            AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
+                            AppColors.AtomValidPos);
+                    }
+                    else
+                    {
+                        CurrentAtom.Draw(Batch, new Vector2(
+                            AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
+                            AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
+                            AppColors.AtomInvalidPos);
+                    }
                 }
             }
 

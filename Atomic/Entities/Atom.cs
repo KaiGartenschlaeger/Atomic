@@ -35,19 +35,20 @@ namespace Atomic.Entities
                 switch (_electronsCount)
                 {
                     case 0:
-                        color = Color.LightGreen;
+                        color = AppColors.Atom0;
                         break;
+
                     case 1:
-                        color = Color.Green;
+                        color = AppColors.Atom1;
                         break;
                     case 2:
-                        color = Color.Yellow;
+                        color = AppColors.Atom2;
                         break;
                     case 3:
-                        color = Color.Blue;
+                        color = AppColors.Atom3;
                         break;
                     case 4:
-                        color = Color.Red;
+                        color = AppColors.Atom4;
                         break;
 
                     default:

@@ -45,16 +45,40 @@ namespace Atomic.Entities
             if (atom == null)
                 throw new ArgumentNullException(nameof(atom));
 
-            if (IsValidPos(gridX, gridY) && !HasAtom(gridX, gridY))
+            if (CanSet(gridX, gridY, atom))
             {
                 _atoms[gridX, gridY] = new GridAtom(this, gridX, gridY, atom.Electrons);
-
                 AtomAdded(_atoms[gridX, gridY]);
-
                 return true;
             }
 
             return false;
+        }
+
+        private bool CanResolveElectron(int gridX, int gridY)
+        {
+            var atom = GetAtom(gridX, gridY);
+            if (atom != null)
+                return atom.Electrons > 0;
+
+            return IsValidPos(gridX, gridY);
+        }
+
+        public bool CanSet(int gridX, int gridY, Atom atom)
+        {
+            if (atom == null)
+                throw new ArgumentNullException(nameof(atom));
+
+            if (!IsValidPos(gridX, gridY) || HasAtom(gridX, gridY))
+                return false;
+
+            var electronsToResolve = atom.Electrons;
+            if (CanResolveElectron(gridX - 1, gridY)) electronsToResolve--;
+            if (CanResolveElectron(gridX + 1, gridY)) electronsToResolve--;
+            if (CanResolveElectron(gridX, gridY - 1)) electronsToResolve--;
+            if (CanResolveElectron(gridX, gridY + 1)) electronsToResolve--;
+
+            return electronsToResolve < 1;
         }
 
         public void Clear()
