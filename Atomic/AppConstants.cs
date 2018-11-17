@@ -22,5 +22,7 @@
         public const int WindowHeight = GridHeight * GridTileSize + ScreenPadding * 2;
 
         public const int MenuPadding = 8;
+
+        public const string LastSaveGameFileName = "LastGame";
     }
 }

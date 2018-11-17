@@ -14,13 +14,13 @@ namespace Atomic.Screens
     {
         #region Fields
 
-        private readonly SaveGameService _saveService;
+        private readonly ISaveGameService _saveService;
 
         #endregion
 
         #region Constructor
 
-        public GameScreen(SaveGameService saveService)
+        public GameScreen(ISaveGameService saveService)
         {
             if (saveService == null)
                 throw new ArgumentNullException(nameof(saveService));
@@ -57,33 +57,28 @@ namespace Atomic.Screens
 
         #region Public methods
 
-        public void StartNewGame()
+        public void NewGame()
         {
-            Session.Reset(GameDifficulty.Normal);
+            Session.Reset();
             Grid.Clear();
 
-            CurrentAtom = Grid.CreateAtom();
-            NextAtom = Grid.CreateAtom();
-
-            //test case 1
-            //Grid.SetAtom(2, 2, 2);
-            //Grid.SetAtom(3, 2, 3);
-            //Grid.SetAtom(4, 2, 2);
-            //Grid.SetAtom(4, 3, 3);
-            //Grid.SetAtom(4, 4, 2);
-            //Grid.SetAtom(3, 4, 2);
-            //Grid.SetAtom(3, 3, 4);
-            //CurrentAtom = Grid.CreateAtom(1);
+            Session.CurrentAtom = Grid.CreateAtom();
+            Session.NextAtom = Grid.CreateAtom();
         }
 
-        public bool ContinueLastGame()
+        public void ContinueLastGame()
         {
-            if (_saveService.HasLastGame())
-            {
-                throw new NotImplementedException();
-            }
+            var data = _saveService.LoadGame(AppConstants.LastSaveGameFileName);
 
-            return false;
+            Session.Reset();
+            Session.Time = data.ElapsedTime.TotalSeconds;
+            Session.Score = data.Score;
+            Session.Atoms = data.Atoms;
+            Session.Molecules = data.Molecules;
+            Session.CurrentAtom = Grid.CreateAtom(data.CurrentAtom);
+            Session.NextAtom = Grid.CreateAtom(data.NextAtom);
+
+            Grid.FromSaveGame(data.GridData);
         }
 
         #endregion
@@ -100,10 +95,10 @@ namespace Atomic.Screens
 
         protected override void OnUpdate(GameTime time, int updateCounter)
         {
-            if (CurrentAtom != null)
-                CurrentAtom.Update(time);
-            if (NextAtom != null)
-                NextAtom.Update(time);
+            if (Session.CurrentAtom != null)
+                Session.CurrentAtom.Update(time);
+            if (Session.NextAtom != null)
+                Session.NextAtom.Update(time);
 
             GridRenderer.Update(time);
         }
@@ -112,15 +107,15 @@ namespace Atomic.Screens
         {
             Session.Time += time.ElapsedSeconds();
 
-            if (CurrentAtom != null &&
+            if (Session.CurrentAtom != null &&
                 IsMouseOverGrid() &&
                 Mouse.IsButtonPressed(MouseButton.Left))
             {
                 var gridPos = GetMouseGridPos();
-                if (Grid.SetAtom(gridPos.X, gridPos.Y, CurrentAtom))
+                if (Grid.SetAtom(gridPos.X, gridPos.Y, Session.CurrentAtom))
                 {
-                    CurrentAtom = NextAtom;
-                    NextAtom = Grid.CreateAtom();
+                    Session.CurrentAtom = Session.NextAtom;
+                    Session.NextAtom = Grid.CreateAtom();
                 }
             }
 
@@ -141,8 +136,8 @@ namespace Atomic.Screens
             else if (Keyboard.IsKeyReleased(Keys.D3)) electrons = 3;
             else if (Keyboard.IsKeyReleased(Keys.D4)) electrons = 4;
 
-            if (CurrentAtom != null && electrons != -1)
-                CurrentAtom.Electrons = electrons;
+            if (Session.CurrentAtom != null && electrons != -1)
+                Session.CurrentAtom.Electrons = electrons;
 
             if (Keyboard.IsKeyReleased(Keys.R))
                 Grid.Clear();
@@ -198,17 +193,17 @@ namespace Atomic.Screens
             Batch.DrawRect(new Rectangle(AppConstants.GridRight, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
             Batch.DrawRect(new Rectangle(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
 
-            if (CurrentAtom != null)
+            if (Session.CurrentAtom != null)
             {
-                CurrentAtom.Draw(Batch,
+                Session.CurrentAtom.Draw(Batch,
                     pos: new Vector2(
                         AppConstants.GridRight + AppConstants.PreviewBoxWidth / 2,
                         y + AppConstants.PreviewBoxHeight / 2), layerDepth: LayerDepth.Default);
             }
 
-            if (NextAtom != null)
+            if (Session.NextAtom != null)
             {
-                NextAtom.Draw(Batch,
+                Session.NextAtom.Draw(Batch,
                     pos: new Vector2(
                         AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding + AppConstants.PreviewBoxWidth / 2,
                         y + AppConstants.PreviewBoxHeight / 2),
@@ -216,15 +211,15 @@ namespace Atomic.Screens
             }
 
             // atom grid preview
-            if (CurrentAtom != null && IsMouseOverGrid() && IsOnTop)
+            if (Session.CurrentAtom != null && IsMouseOverGrid() && IsOnTop)
             {
                 var gridPos = GetMouseGridPos();
 
                 if (Grid.IsValidPos(gridPos.X, gridPos.Y) && !Grid.HasAtom(gridPos.X, gridPos.Y))
                 {
-                    if (Grid.CanSet(gridPos.X, gridPos.Y, CurrentAtom))
+                    if (Grid.CanSet(gridPos.X, gridPos.Y, Session.CurrentAtom))
                     {
-                        CurrentAtom.Draw(Batch, new Vector2(
+                        Session.CurrentAtom.Draw(Batch, new Vector2(
                             AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
                             AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
                             LayerDepth.Default,
@@ -232,7 +227,7 @@ namespace Atomic.Screens
                     }
                     else
                     {
-                        CurrentAtom.Draw(Batch, new Vector2(
+                        Session.CurrentAtom.Draw(Batch, new Vector2(
                             AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
                             AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
                             LayerDepth.Default,
@@ -250,9 +245,6 @@ namespace Atomic.Screens
 
         [Store]
         public AppContents AppContents { get; set; }
-
-        public Atom CurrentAtom { get; private set; }
-        public Atom NextAtom { get; private set; }
 
         public AtomsGrid Grid { get; private set; }
         public GridRenderer GridRenderer { get; private set; }

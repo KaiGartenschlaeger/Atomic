@@ -20,7 +20,7 @@ namespace Atomic
         {
             Components.Add(_screenManager);
 
-            _screenManager.Dependencies.AddSingleton<SaveGameService>();
+            _screenManager.Dependencies.AddSingleton<ISaveGameService, XmlSaveGameService>();
 
             _screenManager.Register<StartMenuScreen>();
             _screenManager.Register<GameScreen>();

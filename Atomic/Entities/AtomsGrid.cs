@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Atomic.Services;
+using Microsoft.Xna.Framework;
 using PureFreak.TileMore;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,64 @@ namespace Atomic.Entities
             }
 
             return false;
+        }
+
+        public void FromSaveGame(SaveGameGridData[,] gridData)
+        {
+            if (gridData == null)
+                throw new ArgumentNullException(nameof(gridData));
+
+            var width = gridData.GetLength(0);
+            var height = gridData.GetLength(1);
+
+            if (width != _width || height != _height)
+                throw new ArgumentException("Given grid data array has invalid dimensions.");
+
+            Clear();
+            for (int gridX = 0; gridX < width; gridX++)
+            {
+                for (int gridY = 0; gridY < height; gridY++)
+                {
+                    var data = gridData[gridX, gridY];
+                    if (data != null)
+                    {
+                        _atoms[gridX, gridY] = new GridAtom(this, gridX, gridY, data.Electrons);
+                    }
+                }
+            }
+
+            for (int gridX = 0; gridX < width; gridX++)
+            {
+                for (int gridY = 0; gridY < height; gridY++)
+                {
+                    var data = gridData[gridX, gridY];
+                    if (data != null)
+                    {
+                        var atom = _atoms[gridX, gridY];
+
+                        if (data.ConnectedLeft)
+                        {
+                            atom.LeftConnection = atom.LeftAtom;
+                            atom.LeftAtom.RightConnection = atom;
+                        }
+                        if (data.ConnectedTop)
+                        {
+                            atom.TopConnection = atom.TopAtom;
+                            atom.TopAtom.BottomConnection = atom;
+                        }
+                        if (data.ConnectedRight)
+                        {
+                            atom.RightConnection = atom.RightAtom;
+                            atom.RightAtom.LeftConnection = atom;
+                        }
+                        if (data.ConnectedBottom)
+                        {
+                            atom.BottomConnection = atom.BottomAtom;
+                            atom.BottomAtom.TopConnection = atom;
+                        }
+                    }
+                }
+            }
         }
 
         public void RemoveAtom(int gridX, int gridY)
@@ -258,10 +317,8 @@ namespace Atomic.Entities
         public bool IsValidPos(int gridX, int gridY)
         {
             return
-                gridX >= 0 &&
-                gridY >= 0 &&
-                gridX < _width &&
-                gridY < _height;
+                gridX >= 0 && gridX < _width &&
+                gridY >= 0 && gridY < _height;
         }
 
         public int TileSize

@@ -13,13 +13,13 @@ namespace Atomic.Screens
         #region Fields
 
         private TextMenu _menu;
-        private readonly SaveGameService _saveService;
+        private readonly ISaveGameService _saveService;
 
         #endregion
 
         #region Constructor
 
-        public GameMenuScreen(SaveGameService saveService)
+        public GameMenuScreen(ISaveGameService saveService)
         {
             if (saveService == null)
                 throw new ArgumentNullException(nameof(saveService));
@@ -39,8 +39,41 @@ namespace Atomic.Screens
         private void ItemSave_Clicked()
         {
             var gs = GetScreen<GameScreen>();
+            var session = gs.Session;
+            var grid = gs.Grid;
 
-            _saveService.SaveGame(gs.Session, gs.Grid, gs.CurrentAtom, gs.NextAtom);
+            var data = new SaveGameData();
+            data.ElapsedTime = TimeSpan.FromSeconds(session.Time);
+
+            data.Score = session.Score;
+            data.Atoms = session.Atoms;
+            data.Molecules = session.Molecules;
+
+            data.CurrentAtom = session.CurrentAtom.Electrons;
+            data.NextAtom = session.NextAtom.Electrons;
+
+            data.GridData = new SaveGameGridData[grid.Width, grid.Height];
+            for (int gridX = 0; gridX < grid.Width; gridX++)
+            {
+                for (int gridY = 0; gridY < grid.Height; gridY++)
+                {
+                    var atom = grid.GetAtom(gridX, gridY);
+                    if (atom != null)
+                    {
+                        data.GridData[gridX, gridY] = new SaveGameGridData
+                        {
+                            Electrons = atom.Electrons,
+                            ConnectedLeft = atom.LeftConnection != null,
+                            ConnectedTop = atom.TopConnection != null,
+                            ConnectedRight = atom.RightConnection != null,
+                            ConnectedBottom = atom.BottomConnection != null
+                        };
+                    }
+                }
+            }
+
+            _saveService.SaveGame(AppConstants.LastSaveGameFileName, data);
+
             Manager.Deactivate<GameMenuScreen>();
         }
 

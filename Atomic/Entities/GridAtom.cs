@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PureFreak.TileMore;
 using System;
 using System.Diagnostics;
 
@@ -115,16 +116,45 @@ namespace Atomic.Entities
             return result;
         }
 
+        private bool CanConnectTo(GridAtom target)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (Electrons <= 0)
+                return false;
+
+            if (target.Electrons <= 0)
+                return false;
+
+            var differenceX = target.GridX - GridX;
+            var differenceY = target.GridY - GridY;
+
+            if (MathI.Abs(differenceX) + MathI.Abs(differenceY) != 1)
+                return false;
+
+            if (differenceX == -1)
+                return LeftConnection == null;
+            else if (differenceX == 1)
+                return RightConnection == null;
+            else if (differenceY == -1)
+                return TopConnection == null;
+            else if (differenceY == 1)
+                return BottomConnection == null;
+
+            return false;
+        }
+
         public void ConnectToNeighbours()
         {
-            for (int i = 0; i < 4; i++) // 4 = max neighbours
-            {
-                var other = GetNeighbourAtomWithSmallestElectronsCount();
-                if (other != null) ConnectAtoms(this, other);
-
-                if (other == null) break;
-                if (Electrons <= 0) break;
-            }
+            if (LeftAtom != null && CanConnectTo(LeftAtom))
+                ConnectAtoms(this, LeftAtom);
+            if (TopAtom != null && CanConnectTo(TopAtom))
+                ConnectAtoms(this, TopAtom);
+            if (RightAtom != null && CanConnectTo(RightAtom))
+                ConnectAtoms(this, RightAtom);
+            if (BottomAtom != null && CanConnectTo(BottomAtom))
+                ConnectAtoms(this, BottomAtom);
         }
 
         public int GridX

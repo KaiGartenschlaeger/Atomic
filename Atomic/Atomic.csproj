@@ -52,7 +52,6 @@
     <Compile Include="Entities\AtomsGrid.cs" />
     <Compile Include="AppColors.cs" />
     <Compile Include="AppContents.cs" />
-    <Compile Include="Entities\GameDifficulty.cs" />
     <Compile Include="Entities\GameSession.cs" />
     <Compile Include="Entities\GridAtom.cs" />
     <Compile Include="Entities\GridRenderer.cs" />
@@ -62,7 +61,12 @@
     <Compile Include="Screens\GameMenuScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
-    <Compile Include="Services\SaveGameService.cs" />
+    <Compile Include="Services\BinSaveGameService.cs" />
+    <Compile Include="Services\HighscoreService.cs" />
+    <Compile Include="Services\IHighscoreService.cs" />
+    <Compile Include="Services\SaveGameData.cs" />
+    <Compile Include="Services\SaveGameGridData.cs" />
+    <Compile Include="Services\XmlSaveGameService.cs" />
     <Compile Include="Services\ISaveGameService.cs" />
     <Compile Include="UI\TextMenu.cs" />
     <Compile Include="UI\TextMenuItem.cs" />

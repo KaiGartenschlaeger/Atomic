@@ -14,13 +14,13 @@ namespace Atomic.Screens
 
         private Texture2D _background;
         private TextMenu _menu;
-        private readonly SaveGameService _saveService;
+        private readonly ISaveGameService _saveService;
 
         #endregion
 
         #region Constructor
 
-        public StartMenuScreen(SaveGameService saveService)
+        public StartMenuScreen(ISaveGameService saveService)
         {
             if (saveService == null)
                 throw new ArgumentNullException(nameof(saveService));
@@ -34,19 +34,14 @@ namespace Atomic.Screens
 
         private void ItemNew_Clicked()
         {
-            var gs = GetScreen<GameScreen>();
-            gs.StartNewGame();
-
+            GetScreen<GameScreen>().NewGame();
             Manager.SwitchTo<GameScreen>();
         }
 
         private void ItemContinueLast_Clicked()
         {
-            var gs = GetScreen<GameScreen>();
-            if (gs.ContinueLastGame())
-            {
-                Manager.SwitchTo<GameScreen>();
-            }
+            GetScreen<GameScreen>().ContinueLastGame();
+            Manager.SwitchTo<GameScreen>();
         }
 
         private void ItemEnd_Clicked()
@@ -61,7 +56,7 @@ namespace Atomic.Screens
         protected override void OnEnter()
         {
             var item = _menu.GetItem("ContinueLastGame");
-            item.IsEnabled = _saveService.HasLastGame();
+            item.IsEnabled = _saveService.HasSaveGame(AppConstants.LastSaveGameFileName);
         }
 
         protected override void OnStart()
