@@ -28,7 +28,7 @@ namespace Atomic.Entities
             Rotation += time.ElapsedSeconds() * Angle.PiOver2;
         }
 
-        public void Draw(SpriteBatch batch, Vector2 pos, Color? color = null)
+        public void Draw(SpriteBatch batch, Vector2 pos, float layerDepth, Color? color = null)
         {
             if (!color.HasValue)
             {
@@ -67,7 +67,7 @@ namespace Atomic.Entities
                 region.Origin,
                 Scale,
                 SpriteEffects.None,
-                1f);
+                layerDepth);
         }
 
         public int Electrons

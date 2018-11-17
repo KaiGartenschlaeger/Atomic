@@ -26,8 +26,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="1027.6381"
-     inkscape:cy="867.16191"
+     inkscape:cx="557.91717"
+     inkscape:cy="301.47648"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -59,24 +59,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       inkscape:export-ydpi="19"
-       inkscape:export-xdpi="19"
-       ry="0.094494089"
-       y="-136.07144"
-       x="234.63394"
-       height="7.1815472"
-       width="38.175598"
-       id="VConnection"
-       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:4;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
-       transform="rotate(90)" />
-    <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:4;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
-       id="rect837"
-       width="38.175598"
-       height="7.1815472"
-       x="65.011902"
-       y="252.3988"
-       ry="0.094494089"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.29999995;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="HConnection"
+       width="58.603619"
+       height="7.0098686"
+       x="47.284107"
+       y="249.65913"
+       ry="0.092235163"
        inkscape:export-xdpi="19"
        inkscape:export-ydpi="19" />
     <g
@@ -312,5 +301,16 @@
            ry="5.0406308" />
       </g>
     </g>
+    <rect
+       inkscape:export-ydpi="19"
+       inkscape:export-xdpi="19"
+       ry="0.092235163"
+       y="-144.50281"
+       x="217.71504"
+       height="7.0098686"
+       width="58.603619"
+       id="VConnection"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.3;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       transform="rotate(90)" />
   </g>
 </svg>

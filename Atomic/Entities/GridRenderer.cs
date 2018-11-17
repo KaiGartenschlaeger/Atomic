@@ -58,7 +58,7 @@ namespace Atomic.Entities
                             pos.X + gridX * _grid.TileSize,
                             pos.Y + _grid.PixelHeight),
                         1,
-                        AppColors.GridCellBorder);
+                        AppColors.GridCellBorder, 0f);
                 }
 
                 for (int gridY = 0; gridY < _grid.Height; gridY++)
@@ -74,19 +74,19 @@ namespace Atomic.Entities
                                 pos.X + _grid.PixelWidth,
                                 pos.Y + gridY * _grid.TileSize),
                             1,
-                            AppColors.GridCellBorder);
+                            AppColors.GridCellBorder, 0f);
                     }
 
                     var atom = _grid.Atoms[gridX, gridY];
                     if (atom != null)
                     {
                         // atom
-                        RenderConnections(batch, pos, atom);
+                        RenderConnections(batch, pos, atom, 0.5f);
                         RenderAtom(batch,
                             pos + new Vector2(
                                 gridX * _grid.TileSize + _grid.TileSize / 2,
                                 gridY * _grid.TileSize + _grid.TileSize / 2),
-                            atom);
+                            atom, 1f);
                     }
                 }
             }
@@ -94,27 +94,29 @@ namespace Atomic.Entities
             batch.DrawRect(pos, new Size(_grid.PixelWidth, _grid.PixelHeight), 4, AppColors.GridBorder);
         }
 
-        private void RenderConnections(SpriteBatch batch, Vector2 pos, GridAtom atom)
+        private void RenderConnections(SpriteBatch batch, Vector2 pos, GridAtom atom, float layerDepth)
         {
             if (atom.LeftConnection != null)
             {
                 batch.DrawTextureAtlasRegion(_grid.Contents.HConnection,
-                    new Vector2(
+                    pos: new Vector2(
                         pos.X + atom.GridX * _grid.TileSize,
-                        pos.Y + atom.GridY * _grid.TileSize + _grid.TileSize / 2));
+                        pos.Y + atom.GridY * _grid.TileSize + _grid.TileSize / 2),
+                    layerDepth: layerDepth);
             }
             if (atom.TopConnection != null)
             {
                 batch.DrawTextureAtlasRegion(_grid.Contents.VConnection,
-                    new Vector2(
+                    pos: new Vector2(
                         pos.X + atom.GridX * _grid.TileSize + _grid.TileSize / 2,
-                        pos.Y + atom.GridY * _grid.TileSize));
+                        pos.Y + atom.GridY * _grid.TileSize),
+                    layerDepth: layerDepth);
             }
         }
 
-        private void RenderAtom(SpriteBatch batch, Vector2 pos, Atom atom)
+        private void RenderAtom(SpriteBatch batch, Vector2 pos, Atom atom, float layerDepth)
         {
-            atom.Draw(batch, pos);
+            atom.Draw(batch, pos, layerDepth);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PureFreak.TileMore;
 using PureFreak.TileMore.Input;
 using PureFreak.TileMore.Screens;
 
@@ -119,10 +120,15 @@ namespace Atomic.Screens
         {
             GraphicsDevice.Clear(AppColors.WindowBackground);
 
-            Batch.Begin();
+            Batch.Begin(SpriteSortMode.FrontToBack);
 
             // grid
             GridRenderer.Draw(Batch, new Vector2(AppConstants.GridX, AppConstants.GridY));
+
+            Batch.End();
+
+
+            Batch.Begin();
 
             var y = AppConstants.GridY + 10;
 
@@ -150,9 +156,21 @@ namespace Atomic.Screens
             Batch.DrawRect(new Rectangle(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
 
             if (CurrentAtom != null)
-                CurrentAtom.Draw(Batch, new Vector2(AppConstants.GridRight + AppConstants.PreviewBoxWidth / 2, y + AppConstants.PreviewBoxHeight / 2));
+            {
+                CurrentAtom.Draw(Batch,
+                    pos: new Vector2(
+                        AppConstants.GridRight + AppConstants.PreviewBoxWidth / 2,
+                        y + AppConstants.PreviewBoxHeight / 2), layerDepth: LayerDepth.Default);
+            }
+
             if (NextAtom != null)
-                NextAtom.Draw(Batch, new Vector2(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding + AppConstants.PreviewBoxWidth / 2, y + AppConstants.PreviewBoxHeight / 2));
+            {
+                NextAtom.Draw(Batch,
+                    pos: new Vector2(
+                        AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding + AppConstants.PreviewBoxWidth / 2,
+                        y + AppConstants.PreviewBoxHeight / 2),
+                    layerDepth: LayerDepth.Default);
+            }
 
             // atom grid preview
             if (CurrentAtom != null && IsMouseOverGrid() && IsOnTop)
@@ -166,6 +184,7 @@ namespace Atomic.Screens
                         CurrentAtom.Draw(Batch, new Vector2(
                             AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
                             AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
+                            LayerDepth.Default,
                             AppColors.AtomValidPos);
                     }
                     else
@@ -173,6 +192,7 @@ namespace Atomic.Screens
                         CurrentAtom.Draw(Batch, new Vector2(
                             AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
                             AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
+                            LayerDepth.Default,
                             AppColors.AtomInvalidPos);
                     }
                 }

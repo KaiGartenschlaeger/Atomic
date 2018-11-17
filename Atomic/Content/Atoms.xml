@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $TexturePacker:SmartUpdate:14779359f6728bbc0eeaf7180f7745e0:dba9f36c1f526e13bd5e87f99075e6f8:fc631223139da2dcd6f5a957d761abbd$ -->
+<!-- $TexturePacker:SmartUpdate:c27738766011faa2a5a9bca5c8ef952a:b37cbe4ea40fca28caa772e1518bf0eb:fc631223139da2dcd6f5a957d761abbd$ -->
 <textureAtlas version="1.0">
     <texture name="Atoms-0.png">
         <sprite name="Atom4" isTrimmed="false" isSolid="false" isRotated="false">
@@ -8,7 +8,7 @@
 			<centerOffset x="0" y="0" />
 			<source x="0" y="0" width="53" height="54" />
 			<frame x="1" y="1" width="53" height="54" />
-            <pivot x="0.5094339622641509" y="0.5" xPx="27" yPx="27" />
+            <pivot x="0.509434" y="0.5" xPx="27.000002000000002" yPx="27" />
         </sprite>
         <sprite name="Atom2" isTrimmed="false" isSolid="false" isRotated="false">
 			<size width="34" height="53" />
@@ -16,7 +16,7 @@
 			<centerOffset x="0" y="0" />
 			<source x="0" y="0" width="34" height="53" />
 			<frame x="1" y="56" width="34" height="53" />
-            <pivot x="0.5" y="0.50943396" xPx="17" yPx="26.999999879999997" />
+            <pivot x="0.5" y="0.509434" xPx="17" yPx="27.000002000000002" />
         </sprite>
         <sprite name="Atom3" isTrimmed="false" isSolid="false" isRotated="false">
 			<size width="44" height="47" />
@@ -24,7 +24,7 @@
 			<centerOffset x="0" y="0" />
 			<source x="0" y="0" width="44" height="47" />
 			<frame x="55" y="1" width="44" height="47" />
-            <pivot x="0.61363636" y="0.5106383" xPx="26.99999984" yPx="24.0000001" />
+            <pivot x="0.613636" y="0.510638" xPx="26.999983999999998" yPx="23.999986000000003" />
         </sprite>
         <sprite name="Atom1" isTrimmed="false" isSolid="false" isRotated="false">
 			<size width="34" height="44" />
@@ -32,15 +32,15 @@
 			<centerOffset x="0" y="0" />
 			<source x="0" y="0" width="34" height="44" />
 			<frame x="36" y="56" width="34" height="44" />
-            <pivot x="0.5" y="0.61363636" xPx="17" yPx="26.99999984" />
+            <pivot x="0.5" y="0.613636" xPx="17" yPx="26.999983999999998" />
         </sprite>
         <sprite name="HConnection" isTrimmed="false" isSolid="false" isRotated="false">
-			<size width="32" height="8" />
+			<size width="46" height="8" />
 			<cornerOffset x="0" y="0" />
 			<centerOffset x="0" y="0" />
-			<source x="0" y="0" width="32" height="8" />
-			<frame x="36" y="101" width="32" height="8" />
-            <pivot x="0.5" y="0.5" xPx="16" yPx="4" />
+			<source x="0" y="0" width="46" height="8" />
+			<frame x="36" y="101" width="46" height="8" />
+            <pivot x="0.5" y="0.5" xPx="23" yPx="4" />
         </sprite>
         <sprite name="Atom0" isTrimmed="false" isSolid="false" isRotated="false">
 			<size width="34" height="34" />
@@ -51,12 +51,12 @@
             <pivot x="0.5" y="0.5" xPx="17" yPx="17" />
         </sprite>
         <sprite name="VConnection" isTrimmed="false" isSolid="false" isRotated="false">
-			<size width="8" height="32" />
+			<size width="8" height="46" />
 			<cornerOffset x="0" y="0" />
 			<centerOffset x="0" y="0" />
-			<source x="0" y="0" width="8" height="32" />
-			<frame x="100" y="1" width="8" height="32" />
-            <pivot x="0.5" y="0.5" xPx="4" yPx="16" />
+			<source x="0" y="0" width="8" height="46" />
+			<frame x="100" y="1" width="8" height="46" />
+            <pivot x="0.5" y="0.5" xPx="4" yPx="23" />
         </sprite>
     </texture>
 </textureAtlas>
