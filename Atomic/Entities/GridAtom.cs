@@ -48,7 +48,7 @@ namespace Atomic.Entities
                 BottomConnection == atom;
         }
 
-        public void RefreshNeighbours()
+        public void ConnectToNeighbours()
         {
             if (Electrons > 0 && LeftAtom != null && LeftAtom.Electrons > 0 && LeftConnection != LeftAtom)
             {
@@ -58,6 +58,7 @@ namespace Atomic.Entities
                 LeftAtom.RightConnection = this;
                 LeftAtom.Electrons--;
             }
+
             if (Electrons > 0 && RightAtom != null && RightAtom.Electrons > 0 && RightConnection != RightAtom)
             {
                 RightConnection = RightAtom;
@@ -66,6 +67,7 @@ namespace Atomic.Entities
                 RightAtom.LeftConnection = this;
                 RightAtom.Electrons--;
             }
+
             if (Electrons > 0 && TopAtom != null && TopAtom.Electrons > 0 && TopConnection != TopAtom)
             {
                 TopConnection = TopAtom;
@@ -74,6 +76,7 @@ namespace Atomic.Entities
                 TopAtom.BottomConnection = this;
                 TopAtom.Electrons--;
             }
+
             if (Electrons > 0 && BottomAtom != null && BottomAtom.Electrons > 0 && BottomConnection != BottomAtom)
             {
                 BottomConnection = BottomAtom;

@@ -43,6 +43,16 @@ namespace Atomic.Screens
 
             CurrentAtom = Grid.CreateAtom();
             NextAtom = Grid.CreateAtom();
+
+            // test case 1
+            //Grid.SetAtom(2, 2, 2);
+            //Grid.SetAtom(3, 2, 3);
+            //Grid.SetAtom(4, 2, 2);
+            //Grid.SetAtom(4, 3, 3);
+            //Grid.SetAtom(4, 4, 2);
+            //Grid.SetAtom(3, 4, 2);
+            //Grid.SetAtom(3, 3, 4);
+            //CurrentAtom = Grid.CreateAtom(1);
         }
 
         #endregion

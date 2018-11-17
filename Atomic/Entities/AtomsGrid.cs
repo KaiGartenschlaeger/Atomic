@@ -40,6 +40,11 @@ namespace Atomic.Entities
             return new Atom(_contents, electrons.Value);
         }
 
+        public void SetAtom(int gridX, int gridY, int electrons)
+        {
+            SetAtom(gridX, gridY, CreateAtom(electrons));
+        }
+
         public bool SetAtom(int gridX, int gridY, Atom atom)
         {
             if (atom == null)
@@ -99,7 +104,10 @@ namespace Atomic.Entities
                 for (int gridY = addedAtom.GridY - 1; gridY < addedAtom.GridY + 1; gridY++)
                 {
                     var atom = GetAtom(gridX, gridY);
-                    if (atom != null) atom.RefreshNeighbours();
+                    if (atom != null)
+                    {
+                        atom.ConnectToNeighbours();
+                    }
                 }
             }
 

@@ -48,6 +48,8 @@ namespace Atomic.Entities
             for (int gridX = 0; gridX < _grid.Width; gridX++)
             {
                 if (gridX > 0)
+                {
+                    // vertical lines
                     batch.DrawLine(
                         new Vector2(
                             pos.X + gridX * _grid.TileSize,
@@ -57,11 +59,13 @@ namespace Atomic.Entities
                             pos.Y + _grid.PixelHeight),
                         1,
                         AppColors.GridCellBorder);
+                }
 
                 for (int gridY = 0; gridY < _grid.Height; gridY++)
                 {
                     if (gridX == 0 && gridY > 0)
                     {
+                        // horizontal lines
                         batch.DrawLine(
                             new Vector2(
                                 pos.X,
@@ -76,6 +80,7 @@ namespace Atomic.Entities
                     var atom = _grid.Atoms[gridX, gridY];
                     if (atom != null)
                     {
+                        // atom
                         RenderConnections(batch, pos, atom);
                         RenderAtom(batch,
                             pos + new Vector2(
@@ -91,20 +96,19 @@ namespace Atomic.Entities
 
         private void RenderConnections(SpriteBatch batch, Vector2 pos, GridAtom atom)
         {
-            if (atom.RightConnection != null)
+            if (atom.LeftConnection != null)
             {
                 batch.DrawTextureAtlasRegion(_grid.Contents.HConnection,
                     new Vector2(
-                        pos.X + atom.GridX * _grid.TileSize + _grid.TileSize,
+                        pos.X + atom.GridX * _grid.TileSize,
                         pos.Y + atom.GridY * _grid.TileSize + _grid.TileSize / 2));
             }
-
-            if (atom.BottomConnection != null)
+            if (atom.TopConnection != null)
             {
                 batch.DrawTextureAtlasRegion(_grid.Contents.VConnection,
                     new Vector2(
                         pos.X + atom.GridX * _grid.TileSize + _grid.TileSize / 2,
-                        pos.Y + atom.GridY * _grid.TileSize + _grid.TileSize));
+                        pos.Y + atom.GridY * _grid.TileSize));
             }
         }
 
