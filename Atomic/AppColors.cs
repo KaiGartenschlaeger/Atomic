@@ -25,6 +25,7 @@ namespace Atomic
         public static readonly Color Atom4 = ColorHelper.FromHexString("dc2525");
 
         public static readonly Color MenuItems = new Color(140, 140, 140);
+        public static readonly Color MenuItemsDisabled = new Color(80, 80, 80);
         public static readonly Color MenuItemsHover = new Color(220, 220, 220);
     }
 }

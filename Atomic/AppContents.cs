@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using PureFreak.TileMore.Graphics;
+using System;
 
 namespace Atomic
 {
@@ -24,6 +26,14 @@ namespace Atomic
             _vConnection = atlas.GetRegion("VConnection");
 
             _defaultFont = content.Load<BitmapFont>("ArialRounded18pt");
+
+            // spacing
+            _defaultFont.Spacing = new Point(0, _defaultFont.Spacing.Y);
+
+            // whitespace with
+            var wsIndex = Array.BinarySearch(_defaultFont.Data.Characters, ' ');
+            if (wsIndex != -1)
+                _defaultFont.Data.CharacterInformations[wsIndex].XAdvance = 10;
         }
 
         public TextureAtlasRegion[] AtomRegions

@@ -8,6 +8,7 @@ namespace Atomic.Entities
     public class Atom
     {
         private readonly AppContents _contents;
+        private readonly int _initialElectronsCount;
         private int _electronsCount;
         private float _scale = 1f;
         private float _rotation = 0f;
@@ -20,6 +21,7 @@ namespace Atomic.Entities
                 throw new ArgumentException("Electrons must be a value between 0 and 4");
 
             _contents = contents;
+            _initialElectronsCount = electrons;
             _electronsCount = electrons;
         }
 
@@ -74,6 +76,11 @@ namespace Atomic.Entities
         {
             get { return _electronsCount; }
             set { _electronsCount = MathI.Clamp(value, 0, 4); }
+        }
+
+        public int InitialElectronsCount
+        {
+            get { return _initialElectronsCount; }
         }
 
         public float Rotation

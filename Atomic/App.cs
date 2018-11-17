@@ -1,4 +1,5 @@
 ﻿using Atomic.Screens;
+using Atomic.Services;
 using Microsoft.Xna.Framework;
 using PureFreak.TileMore;
 using PureFreak.TileMore.Screens;
@@ -18,6 +19,8 @@ namespace Atomic
         protected override void Initialize()
         {
             Components.Add(_screenManager);
+
+            _screenManager.Dependencies.AddSingleton<SaveGameService>();
 
             _screenManager.Register<StartMenuScreen>();
             _screenManager.Register<GameScreen>();

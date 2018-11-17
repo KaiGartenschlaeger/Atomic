@@ -5,14 +5,16 @@ using System.Diagnostics;
 
 namespace Atomic.UI
 {
-    [DebuggerDisplay("_text")]
+    [DebuggerDisplay("{_text}")]
     public class TextMenuItem
     {
         #region Fields
 
         private readonly TextMenu _menu;
+        private string _name;
         private string _text;
         private Vector2 _textSize;
+        private bool _enabled;
 
         #endregion
 
@@ -22,11 +24,15 @@ namespace Atomic.UI
         {
             if (menu == null)
                 throw new ArgumentNullException(nameof(menu));
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException(nameof(text));
 
             _menu = menu;
 
             _text = text;
             _textSize = _menu.Font.MeasureString(text);
+
+            _enabled = true;
         }
 
         #endregion
@@ -57,12 +63,18 @@ namespace Atomic.UI
 
         #region Properties
 
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
         public string Text
         {
             get { return _text; }
             set
             {
-                if (value == null)
+                if (string.IsNullOrEmpty(value))
                     throw new ArgumentException(nameof(Text));
 
                 _text = value;
@@ -73,6 +85,12 @@ namespace Atomic.UI
         public Padding Margin { get; set; }
 
         public bool IsHovered { get; set; }
+
+        public bool IsEnabled
+        {
+            get { return _enabled; }
+            set { _enabled = value; }
+        }
 
         #endregion
     }

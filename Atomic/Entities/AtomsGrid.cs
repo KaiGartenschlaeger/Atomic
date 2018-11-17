@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Atomic.Entities
 {
+    /// <summary>
+    /// Represents an grid with atoms.
+    /// </summary>
     public class AtomsGrid
     {
         private readonly AppContents _contents;
@@ -29,6 +32,9 @@ namespace Atomic.Entities
             _atoms = new GridAtom[width, height];
         }
 
+        /// <summary>
+        /// Creates a new atom with given electrons count.
+        /// </summary>
         public Atom CreateAtom(int? electrons = null)
         {
             if (electrons.HasValue && (electrons < 0 || electrons > 4))
@@ -40,11 +46,17 @@ namespace Atomic.Entities
             return new Atom(_contents, electrons.Value);
         }
 
+        /// <summary>
+        /// Tries to create an atom with given electrons count at the given grid position.
+        /// </summary>
         public void SetAtom(int gridX, int gridY, int electrons)
         {
             SetAtom(gridX, gridY, CreateAtom(electrons));
         }
 
+        /// <summary>
+        /// Tries to set the given atom to the given grid position.
+        /// </summary>
         public bool SetAtom(int gridX, int gridY, Atom atom)
         {
             if (atom == null)
@@ -60,6 +72,46 @@ namespace Atomic.Entities
             return false;
         }
 
+        public void RemoveAtom(int gridX, int gridY)
+        {
+            if (!IsValidPos(gridX, gridY))
+                return;
+
+            var atom = GetAtom(gridX, gridY);
+            if (atom == null)
+                return;
+
+            var left = atom.LeftAtom;
+            if (left != null && left.RightConnection != null)
+            {
+                left.RightConnection = null;
+                left.Electrons++;
+            }
+
+            var top = atom.TopAtom;
+            if (top != null && top.BottomConnection != null)
+            {
+                top.BottomConnection = null;
+                top.Electrons++;
+            }
+
+            var right = atom.RightAtom;
+            if (right != null && right.LeftConnection != null)
+            {
+                right.LeftConnection = null;
+                right.Electrons++;
+            }
+
+            var bottom = atom.BottomAtom;
+            if (bottom != null && bottom.TopConnection != null)
+            {
+                bottom.TopConnection = null;
+                bottom.Electrons++;
+            }
+
+            _atoms[gridX, gridY] = null;
+        }
+
         private bool CanResolveElectron(int gridX, int gridY)
         {
             var atom = GetAtom(gridX, gridY);
@@ -69,6 +121,9 @@ namespace Atomic.Entities
             return IsValidPos(gridX, gridY);
         }
 
+        /// <summary>
+        /// Checks if the given atom can be set to the given grid position.
+        /// </summary>
         public bool CanSet(int gridX, int gridY, Atom atom)
         {
             if (atom == null)
@@ -77,15 +132,19 @@ namespace Atomic.Entities
             if (!IsValidPos(gridX, gridY) || HasAtom(gridX, gridY))
                 return false;
 
-            var electronsToResolve = atom.Electrons;
-            if (CanResolveElectron(gridX - 1, gridY)) electronsToResolve--;
-            if (CanResolveElectron(gridX + 1, gridY)) electronsToResolve--;
-            if (CanResolveElectron(gridX, gridY - 1)) electronsToResolve--;
-            if (CanResolveElectron(gridX, gridY + 1)) electronsToResolve--;
+            //var electronsToResolve = atom.Electrons;
+            //if (CanResolveElectron(gridX - 1, gridY)) electronsToResolve--;
+            //if (CanResolveElectron(gridX + 1, gridY)) electronsToResolve--;
+            //if (CanResolveElectron(gridX, gridY - 1)) electronsToResolve--;
+            //if (CanResolveElectron(gridX, gridY + 1)) electronsToResolve--;
+            //return electronsToResolve < 1;
 
-            return electronsToResolve < 1;
+            return true;
         }
 
+        /// <summary>
+        /// Clears the whole grid (Removes all atoms and connections).
+        /// </summary>
         public void Clear()
         {
             for (int gridX = 0; gridX < _width; gridX++)
@@ -99,12 +158,17 @@ namespace Atomic.Entities
 
         private void AtomAdded(GridAtom addedAtom)
         {
+            if (addedAtom == null)
+                throw new ArgumentNullException(nameof(addedAtom));
+
+            addedAtom.ConnectToNeighbours();
+
             for (int gridX = addedAtom.GridX - 1; gridX < addedAtom.GridX + 1; gridX++)
             {
                 for (int gridY = addedAtom.GridY - 1; gridY < addedAtom.GridY + 1; gridY++)
                 {
                     var atom = GetAtom(gridX, gridY);
-                    if (atom != null)
+                    if (atom != null && atom != addedAtom)
                     {
                         atom.ConnectToNeighbours();
                     }
@@ -114,6 +178,9 @@ namespace Atomic.Entities
             CheckMolecule(addedAtom);
         }
 
+        /// <summary>
+        /// Checks if a molecule is complete (has no more electrons) and can be removed.
+        /// </summary>
         private bool CheckMolecule(GridAtom startAtom)
         {
             if (startAtom.Electrons > 0)
@@ -145,11 +212,11 @@ namespace Atomic.Entities
                     openList.Push(currentAtom.BottomConnection.GridPos);
             }
 
-            MoleculeCompleted(moleculeAtoms);
+            RemoveMoleculeAtoms(moleculeAtoms);
             return true;
         }
 
-        private void MoleculeCompleted(HashSet<Point> moleculeAtoms)
+        private void RemoveMoleculeAtoms(HashSet<Point> moleculeAtoms)
         {
             var count = 0;
             var points = 1;
@@ -169,6 +236,9 @@ namespace Atomic.Entities
             _session.Molecules++;
         }
 
+        /// <summary>
+        /// Returns an grid atom or null, if no atom on given position is available.
+        /// </summary>
         public GridAtom GetAtom(int gridX, int gridY)
         {
             if (IsValidPos(gridX, gridY))
@@ -177,6 +247,9 @@ namespace Atomic.Entities
             return null;
         }
 
+        /// <summary>
+        /// Returns true if an atom is available at the given grid position.
+        /// </summary>
         public bool HasAtom(int gridX, int gridY)
         {
             return GetAtom(gridX, gridY) != null;

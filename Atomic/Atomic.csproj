@@ -52,6 +52,7 @@
     <Compile Include="Entities\AtomsGrid.cs" />
     <Compile Include="AppColors.cs" />
     <Compile Include="AppContents.cs" />
+    <Compile Include="Entities\GameDifficulty.cs" />
     <Compile Include="Entities\GameSession.cs" />
     <Compile Include="Entities\GridAtom.cs" />
     <Compile Include="Entities\GridRenderer.cs" />
@@ -61,12 +62,18 @@
     <Compile Include="Screens\GameMenuScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
+    <Compile Include="Services\SaveGameService.cs" />
+    <Compile Include="Services\ISaveGameService.cs" />
     <Compile Include="UI\TextMenu.cs" />
     <Compile Include="UI\TextMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.7.0.1708\lib\net45\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PureFreak.DependencyInjection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PureFreak.DependencyInjection.1.0.0\lib\net45\PureFreak.DependencyInjection.dll</HintPath>
     </Reference>
     <Reference Include="PureFreak.TileMore">
       <HintPath>..\..\TileMore\PureFreak.TileMore\bin\Debug\PureFreak.TileMore.dll</HintPath>

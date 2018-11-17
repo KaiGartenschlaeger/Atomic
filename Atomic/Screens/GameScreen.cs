@@ -1,15 +1,35 @@
 ﻿using Atomic.Entities;
+using Atomic.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PureFreak.TileMore;
 using PureFreak.TileMore.Input;
 using PureFreak.TileMore.Screens;
+using System;
 
 namespace Atomic.Screens
 {
     public class GameScreen : Screen
     {
+        #region Fields
+
+        private readonly SaveGameService _saveService;
+
+        #endregion
+
+        #region Constructor
+
+        public GameScreen(SaveGameService saveService)
+        {
+            if (saveService == null)
+                throw new ArgumentNullException(nameof(saveService));
+
+            _saveService = saveService;
+        }
+
+        #endregion
+
         #region Grid helper
 
         private bool IsMouseOverGrid()
@@ -37,15 +57,15 @@ namespace Atomic.Screens
 
         #region Public methods
 
-        public void NewGame()
+        public void StartNewGame()
         {
-            Session.Reset();
+            Session.Reset(GameDifficulty.Normal);
             Grid.Clear();
 
             CurrentAtom = Grid.CreateAtom();
             NextAtom = Grid.CreateAtom();
 
-            // test case 1
+            //test case 1
             //Grid.SetAtom(2, 2, 2);
             //Grid.SetAtom(3, 2, 3);
             //Grid.SetAtom(4, 2, 2);
@@ -54,6 +74,16 @@ namespace Atomic.Screens
             //Grid.SetAtom(3, 4, 2);
             //Grid.SetAtom(3, 3, 4);
             //CurrentAtom = Grid.CreateAtom(1);
+        }
+
+        public bool ContinueLastGame()
+        {
+            if (_saveService.HasLastGame())
+            {
+                throw new NotImplementedException();
+            }
+
+            return false;
         }
 
         #endregion
@@ -80,6 +110,8 @@ namespace Atomic.Screens
 
         protected override void OnInput(GameTime time, int updateCounter)
         {
+            Session.Time += time.ElapsedSeconds();
+
             if (CurrentAtom != null &&
                 IsMouseOverGrid() &&
                 Mouse.IsButtonPressed(MouseButton.Left))
@@ -114,6 +146,12 @@ namespace Atomic.Screens
 
             if (Keyboard.IsKeyReleased(Keys.R))
                 Grid.Clear();
+
+            if (IsMouseOverGrid() && Mouse.IsButtonPressed(MouseButton.Right))
+            {
+                var gridPos = GetMouseGridPos();
+                Grid.RemoveAtom(gridPos.X, gridPos.Y);
+            }
         }
 
         protected override void OnDraw(SpriteBatch batch)
@@ -131,6 +169,11 @@ namespace Atomic.Screens
             Batch.Begin();
 
             var y = AppConstants.GridY + 10;
+
+            // time
+            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), "Time:", AppColors.Descriptions);
+            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), TimeSpan.FromSeconds(Session.Time).ToString(@"hh\:mm\:ss"), AppColors.Texts);
+            y += AppContents.DefaultFont.Data.LineHeight + 15;
 
             // score
             Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Score:", AppColors.Descriptions);
@@ -212,7 +255,6 @@ namespace Atomic.Screens
         public Atom NextAtom { get; private set; }
 
         public AtomsGrid Grid { get; private set; }
-
         public GridRenderer GridRenderer { get; private set; }
 
         public GameSession Session { get; private set; }
