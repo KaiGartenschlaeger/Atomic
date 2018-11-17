@@ -11,7 +11,7 @@ namespace Atomic.Screens
         #region Fields
 
         private TextMenu _menu;
-
+        
         #endregion
 
         #region Menu events

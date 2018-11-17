@@ -9,8 +9,9 @@ namespace Atomic.Screens
     {
         #region Fields
 
+        private Texture2D _background;
         private TextMenu _menu;
-
+        
         #endregion
 
         #region Menu events
@@ -34,6 +35,8 @@ namespace Atomic.Screens
 
         protected override void OnStart()
         {
+            _background = Content.Load<Texture2D>("Background");
+
             _menu = new TextMenu(AppContents.DefaultFont);
             _menu.Pos = new Vector2(AppConstants.MenuX, AppConstants.MenuY);
             _menu.Padding = AppConstants.MenuPadding;
@@ -58,7 +61,12 @@ namespace Atomic.Screens
             GraphicsDevice.Clear(AppColors.WindowBackground);
 
             batch.Begin();
+
+            // background
+            batch.Draw(_background, new Vector2(GraphicsDevice.Viewport.Width - _background.Width - 25, 25), Color.White);
+            // menu
             _menu.Draw(batch);
+
             batch.End();
         }
 

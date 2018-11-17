@@ -26,8 +26,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="583.6761"
-     inkscape:cy="715.63903"
+     inkscape:cx="1027.6381"
+     inkscape:cy="867.16191"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -50,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -213,6 +213,104 @@
          id="ellipse930"
          cx="167.41505"
          cy="76.55088" />
+    </g>
+    <g
+       id="Background"
+       transform="translate(-33.408691,-20.847023)"
+       style="fill:#4d4d4d"
+       inkscape:export-xdpi="74.470001"
+       inkscape:export-ydpi="74.470001">
+      <g
+         id="g847"
+         transform="rotate(18.412097,223.47119,713.31012)"
+         inkscape:export-xdpi="19"
+         inkscape:export-ydpi="19"
+         style="fill:#4d4d4d">
+        <ellipse
+           ry="21.395561"
+           rx="20.999178"
+           cy="51.774693"
+           cx="150.59508"
+           id="ellipse837"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.30447388;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke" />
+        <ellipse
+           ry="5.0406308"
+           rx="4.9472456"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse839"
+           cx="120.99411"
+           cy="51.774693" />
+        <ellipse
+           cy="51.774693"
+           cx="180.19601"
+           id="ellipse841"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           rx="4.9472456"
+           ry="5.0406308" />
+        <ellipse
+           ry="5.0406308"
+           rx="4.9472456"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse843"
+           cx="150.59508"
+           cy="21.706858" />
+        <ellipse
+           cy="81.842522"
+           cx="150.59508"
+           id="ellipse845"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           rx="4.9472456"
+           ry="5.0406308" />
+      </g>
+      <g
+         transform="rotate(126.20119,222.98863,117.11862)"
+         id="g856"
+         inkscape:export-xdpi="19"
+         inkscape:export-ydpi="19"
+         style="fill:#4d4d4d">
+        <ellipse
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.30447388;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse849"
+           cx="150.59508"
+           cy="51.774693"
+           rx="20.999178"
+           ry="21.395561" />
+        <ellipse
+           cy="51.774693"
+           cx="120.99411"
+           id="ellipse852"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           rx="4.9472456"
+           ry="5.0406308" />
+        <ellipse
+           ry="5.0406308"
+           rx="4.9472456"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse854"
+           cx="180.19601"
+           cy="51.774693" />
+      </g>
+      <g
+         transform="rotate(138.32903,241.54322,127.09859)"
+         id="g862"
+         inkscape:export-xdpi="19"
+         inkscape:export-ydpi="19"
+         style="fill:#4d4d4d">
+        <ellipse
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.30447388;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse858"
+           cx="150.59508"
+           cy="51.774693"
+           rx="20.999178"
+           ry="21.395561" />
+        <ellipse
+           cy="21.706858"
+           cx="150.59508"
+           id="ellipse860"
+           style="opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           rx="4.9472456"
+           ry="5.0406308" />
+      </g>
     </g>
   </g>
 </svg>
