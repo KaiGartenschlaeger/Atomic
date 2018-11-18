@@ -72,6 +72,12 @@
     <Compile Include="Services\Sounds\SoundsManager.cs" />
     <Compile Include="Services\SaveGames\XmlSaveGameService.cs" />
     <Compile Include="Services\SaveGames\ISaveGameService.cs" />
+    <Compile Include="UI\Elements\Label.cs" />
+    <Compile Include="UI\IUIManager.cs" />
+    <Compile Include="UI\Elements\UIElement.cs" />
+    <Compile Include="UI\SkinValue.cs" />
+    <Compile Include="UI\UIManager.cs" />
+    <Compile Include="UI\UISkin.cs" />
     <Compile Include="UI\TextMenu.cs" />
     <Compile Include="UI\TextMenuItem.cs" />
   </ItemGroup>

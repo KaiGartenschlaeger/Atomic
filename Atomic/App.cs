@@ -1,6 +1,8 @@
 ﻿using Atomic.Screens;
 using Atomic.Services.SaveGames;
 using Atomic.Services.Sounds;
+using Atomic.UI;
+using Atomic.UI.Elements;
 using Microsoft.Xna.Framework;
 using PureFreak.TileMore;
 using PureFreak.TileMore.Screens;
@@ -21,10 +23,18 @@ namespace Atomic
         {
             Components.Add(_screenManager);
 
-            _screenManager.Dependencies.AddSingleton<ISoundsManager, SoundsManager>();
+            ISoundsManager soundsManager = new SoundsManager();
+            soundsManager.Volume = 50;
+
+            _screenManager.Dependencies.AddSingleton<ISoundsManager>(r =>
+            {
+                return soundsManager;
+            });
+
             _screenManager.Dependencies.AddSingleton<ISaveGameService, XmlSaveGameService>();
 
             _screenManager.Register<StartMenuScreen>();
+            _screenManager.Register<SettingsScreen>();
             _screenManager.Register<GameScreen>();
             _screenManager.Register<GameMenuScreen>();
 
@@ -39,6 +49,12 @@ namespace Atomic
             contents.LoadContent(Content);
 
             _screenManager.Store.Add("AppContents", contents);
+
+            var skin = new UISkin(contents.DefaultFont);
+            skin.SetValue<Label, Color>(l => l.Color, AppColors.MenuItems);
+            skin.SetValue<Label, Color>(l => l.ColorHovered, AppColors.MenuItemsHover);
+
+            _screenManager.Store.Add("UISkin", skin);
 
             _screenManager.Dependencies.GetService<ISoundsManager>()
                 .LoadContent(Content);

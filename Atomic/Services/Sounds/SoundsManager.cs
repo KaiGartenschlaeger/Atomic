@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using PureFreak.TileMore;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ namespace Atomic.Services.Sounds
         #region Fields
 
         private readonly Dictionary<SoundName, SoundEffect> _loadedEffects;
+        private byte _volume;
 
         #endregion
 
@@ -18,6 +20,7 @@ namespace Atomic.Services.Sounds
         public SoundsManager()
         {
             _loadedEffects = new Dictionary<SoundName, SoundEffect>();
+            _volume = 100;
         }
 
         #endregion
@@ -40,7 +43,21 @@ namespace Atomic.Services.Sounds
         {
             if (_loadedEffects.TryGetValue(name, out SoundEffect effect))
             {
-                effect.Play();
+                var volume = (float)_volume / 100;
+                effect.Play(volume, 0f, 0f);
+            }
+        }
+
+        #endregion
+
+        #region Properties
+
+        public byte Volume
+        {
+            get { return _volume; }
+            set
+            {
+                _volume = (byte)MathI.Clamp(value, 0, 100);
             }
         }
 

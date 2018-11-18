@@ -51,6 +51,11 @@ namespace Atomic.Screens
             Manager.SwitchTo<GameScreen>();
         }
 
+        private void ItemSettings_Clicked()
+        {
+            Manager.SwitchTo<SettingsScreen>();
+        }
+
         private void ItemEnd_Clicked()
         {
             Game.Exit();
@@ -87,6 +92,7 @@ namespace Atomic.Screens
             var itemHighscore = _menu.CreateItem("Highscore list");
 
             var itemSettings = _menu.CreateItem("Settings");
+            itemSettings.Clicked += ItemSettings_Clicked;
 
             var itemEnd = _menu.CreateItem("Exit");
             itemEnd.Margin = new Padding(0, 25, 0, 0);
