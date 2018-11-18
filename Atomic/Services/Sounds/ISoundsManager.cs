@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Content;
 
-namespace Atomic.Services
+namespace Atomic.Services.Sounds
 {
     public interface ISoundsManager
     {

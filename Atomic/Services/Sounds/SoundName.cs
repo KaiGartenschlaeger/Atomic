@@ -1,4 +1,4 @@
-﻿namespace Atomic.Services
+﻿namespace Atomic.Services.Sounds
 {
     public enum SoundName
     {

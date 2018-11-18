@@ -62,16 +62,16 @@
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\SettingsScreen.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
-    <Compile Include="Services\BinSaveGameService.cs" />
-    <Compile Include="Services\HighscoreService.cs" />
-    <Compile Include="Services\IHighscoreService.cs" />
-    <Compile Include="Services\ISoundsManager.cs" />
-    <Compile Include="Services\SaveGameData.cs" />
-    <Compile Include="Services\SaveGameGridData.cs" />
-    <Compile Include="Services\SoundName.cs" />
-    <Compile Include="Services\SoundsManager.cs" />
-    <Compile Include="Services\XmlSaveGameService.cs" />
-    <Compile Include="Services\ISaveGameService.cs" />
+    <Compile Include="Services\SaveGames\BinSaveGameService.cs" />
+    <Compile Include="Services\Highscore\HighscoreService.cs" />
+    <Compile Include="Services\Highscore\IHighscoreService.cs" />
+    <Compile Include="Services\Sounds\ISoundsManager.cs" />
+    <Compile Include="Services\SaveGames\SaveGameData.cs" />
+    <Compile Include="Services\SaveGames\SaveGameGridData.cs" />
+    <Compile Include="Services\Sounds\SoundName.cs" />
+    <Compile Include="Services\Sounds\SoundsManager.cs" />
+    <Compile Include="Services\SaveGames\XmlSaveGameService.cs" />
+    <Compile Include="Services\SaveGames\ISaveGameService.cs" />
     <Compile Include="UI\TextMenu.cs" />
     <Compile Include="UI\TextMenuItem.cs" />
   </ItemGroup>
@@ -125,6 +125,7 @@
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <Import Project="..\packages\MonoGame.Framework.WindowsDX.3.7.0.1708\build\MonoGame.Framework.WindowsDX.targets" Condition="Exists('..\packages\MonoGame.Framework.WindowsDX.3.7.0.1708\build\MonoGame.Framework.WindowsDX.targets')" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Atomic.Services
+namespace Atomic.Services.SaveGames
 {
     public class SaveGameData
     {

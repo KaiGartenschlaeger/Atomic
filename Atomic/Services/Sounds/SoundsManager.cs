@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 
-namespace Atomic.Services
+namespace Atomic.Services.Sounds
 {
     public class SoundsManager : ISoundsManager
     {

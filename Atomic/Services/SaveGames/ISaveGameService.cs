@@ -1,4 +1,4 @@
-﻿namespace Atomic.Services
+﻿namespace Atomic.Services.SaveGames
 {
     public interface ISaveGameService
     {

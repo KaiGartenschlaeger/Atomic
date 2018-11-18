@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml;
 
-namespace Atomic.Services
+namespace Atomic.Services.SaveGames
 {
     public class XmlSaveGameService : ISaveGameService
     {
