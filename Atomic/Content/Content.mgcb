@@ -36,3 +36,9 @@
 /processorParam:TextureFormat=Color
 /build:Background.png
 
+#begin Sounds/Blip5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Blip5.wav
+

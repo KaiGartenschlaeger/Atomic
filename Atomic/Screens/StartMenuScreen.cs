@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureFreak.TileMore;
 using PureFreak.TileMore.Screens;
-using System;
 
 namespace Atomic.Screens
 {
@@ -12,25 +11,32 @@ namespace Atomic.Screens
     {
         #region Fields
 
+        private readonly ISaveGameService _saveService;
+        private readonly ISoundsManager _soundsManager;
+
         private Texture2D _background;
         private TextMenu _menu;
-        private readonly ISaveGameService _saveService;
 
         #endregion
 
         #region Constructor
 
-        public StartMenuScreen(ISaveGameService saveService)
+        public StartMenuScreen(
+            ISaveGameService saveService,
+            ISoundsManager soundsManager)
         {
-            if (saveService == null)
-                throw new ArgumentNullException(nameof(saveService));
-
             _saveService = saveService;
+            _soundsManager = soundsManager;
         }
 
         #endregion
 
         #region Menu events
+
+        private void Menu_ItemHovered(TextMenuItem item)
+        {
+            _soundsManager.PlaySound(SoundName.Blip5);
+        }
 
         private void ItemNew_Clicked()
         {
@@ -55,7 +61,7 @@ namespace Atomic.Screens
 
         protected override void OnEnter()
         {
-            var item = _menu.GetItem("ContinueLastGame");
+            var item = _menu.GetItem("continue_last_game");
             item.IsEnabled = _saveService.HasSaveGame(AppConstants.LastSaveGameFileName);
         }
 
@@ -64,21 +70,24 @@ namespace Atomic.Screens
             _background = Content.Load<Texture2D>("Background");
 
             _menu = new TextMenu(AppContents.DefaultFont);
+            _menu.ItemHovered += Menu_ItemHovered;
             _menu.Pos = new Vector2(100, 150);
             _menu.Padding = AppConstants.MenuPadding;
             _menu.Color = AppColors.MenuItems;
             _menu.ColorDisabled = AppColors.MenuItemsDisabled;
             _menu.ColorHover = AppColors.MenuItemsHover;
 
-            var itemNew = _menu.CreateItem("New game", "NewGame");
+            var itemNew = _menu.CreateItem("New game");
             itemNew.Clicked += ItemNew_Clicked;
 
-            var itemContinueLast = _menu.CreateItem("Continue last game", "ContinueLastGame");
+            var itemContinueLast = _menu.CreateItem("Continue last game");
             itemContinueLast.Clicked += ItemContinueLast_Clicked;
 
             var itemHighscore = _menu.CreateItem("Highscore list");
 
-            var itemEnd = _menu.CreateItem("Exit", "Exit");
+            var itemSettings = _menu.CreateItem("Settings");
+
+            var itemEnd = _menu.CreateItem("Exit");
             itemEnd.Margin = new Padding(0, 25, 0, 0);
             itemEnd.Clicked += ItemEnd_Clicked;
         }

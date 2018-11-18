@@ -20,6 +20,7 @@ namespace Atomic
         {
             Components.Add(_screenManager);
 
+            _screenManager.Dependencies.AddSingleton<ISoundsManager, SoundsManager>();
             _screenManager.Dependencies.AddSingleton<ISaveGameService, XmlSaveGameService>();
 
             _screenManager.Register<StartMenuScreen>();
@@ -37,6 +38,9 @@ namespace Atomic
             contents.LoadContent(Content);
 
             _screenManager.Store.Add("AppContents", contents);
+
+            _screenManager.Dependencies.GetService<ISoundsManager>()
+                .LoadContent(Content);
 
             base.LoadContent();
         }

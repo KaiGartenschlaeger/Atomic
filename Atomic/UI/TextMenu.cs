@@ -16,6 +16,7 @@ namespace Atomic.UI
 
         private readonly BitmapFont _font;
         private readonly List<TextMenuItem> _items;
+        private TextMenuItem _lastHoverItem;
 
         #endregion
 
@@ -42,6 +43,8 @@ namespace Atomic.UI
 
         public void Update(GameTime time, IMouseManager mouse)
         {
+            TextMenuItem currentHoveredItem = null;
+
             var currentPos = Pos;
             foreach (var item in _items)
             {
@@ -52,16 +55,29 @@ namespace Atomic.UI
 
                 item.IsHovered = isHovered;
 
+                if (item.IsHovered)
+                {
+                    currentHoveredItem = item;
+
+                    if (_lastHoverItem != item)
+                    {
+                        _lastHoverItem = item;
+                        if (ItemHovered != null) ItemHovered(item);
+                    }
+                }
+
                 if (item.IsHovered && mouse.IsButtonPressed(MouseButton.Left) && item.IsEnabled)
                 {
-                    if (ItemClicked != null)
-                        ItemClicked(item);
+                    if (ItemClicked != null) ItemClicked(item);
 
                     item.RaiseClicked();
                 }
 
                 currentPos = currentPos.Offset(0f, _font.Data.LineHeight + Padding + item.Margin.Bottom);
             }
+
+            if (currentHoveredItem == null)
+                _lastHoverItem = null;
         }
 
         public void Draw(SpriteBatch batch)
@@ -70,15 +86,24 @@ namespace Atomic.UI
             foreach (var item in _items)
             {
                 currentPos = currentPos.Offset(item.Margin.Left, item.Margin.Top);
-
-                var color = Color;
-                if (!item.IsEnabled) color = ColorDisabled;
-                else if (item.IsHovered) color = ColorHover;
-
-                batch.DrawBitmapFont(_font, currentPos, item.Text, color);
-
+                batch.DrawBitmapFont(_font, currentPos, item.Text, GetItemColor(item));
                 currentPos = currentPos.Offset(0f, _font.Data.LineHeight + Padding + item.Margin.Bottom);
             }
+        }
+
+        private Color GetItemColor(TextMenuItem item)
+        {
+            var color = Color;
+            if (!item.IsEnabled)
+            {
+                color = ColorDisabled;
+            }
+            else if (item.IsHovered)
+            {
+                color = ColorHover;
+            }
+
+            return color;
         }
 
         public TextMenuItem CreateItem(string text)
@@ -102,6 +127,8 @@ namespace Atomic.UI
         #region Events
 
         public event Action<TextMenuItem> ItemClicked;
+
+        public event Action<TextMenuItem> ItemHovered;
 
         #endregion
 
