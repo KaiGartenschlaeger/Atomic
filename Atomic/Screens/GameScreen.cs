@@ -7,6 +7,7 @@ using PureFreak.TileMore;
 using PureFreak.TileMore.Input;
 using PureFreak.TileMore.Screens;
 using System;
+using System.Collections.Generic;
 
 namespace Atomic.Screens
 {
@@ -15,6 +16,7 @@ namespace Atomic.Screens
         #region Fields
 
         private readonly ISaveGameService _saveService;
+        private readonly Stack<int> _nextAtoms;
 
         #endregion
 
@@ -26,11 +28,30 @@ namespace Atomic.Screens
                 throw new ArgumentNullException(nameof(saveService));
 
             _saveService = saveService;
+            _nextAtoms = new Stack<int>();
         }
 
         #endregion
 
-        #region Grid helper
+        #region Helper
+
+        private Atom GetNextAtom()
+        {
+            if (_nextAtoms.Count == 0)
+            {
+                // create next chunk of atoms
+                var buffer = new int[40];
+                for (int i = 0; i < buffer.Length; i++)
+                    buffer[i] = 1 + i % 4;
+
+                RandomHelper.Shuffle(buffer);
+
+                for (int i = 0; i < buffer.Length; i++)
+                    _nextAtoms.Push(buffer[i]);
+            }
+
+            return Grid.CreateAtom(_nextAtoms.Pop());
+        }
 
         private bool IsMouseOverGrid()
         {
@@ -62,8 +83,9 @@ namespace Atomic.Screens
             Session.Reset();
             Grid.Clear();
 
-            Session.CurrentAtom = Grid.CreateAtom();
-            Session.NextAtom = Grid.CreateAtom();
+            _nextAtoms.Clear();
+            Session.CurrentAtom = GetNextAtom();
+            Session.NextAtom = GetNextAtom();
         }
 
         public void ContinueLastGame()
@@ -75,6 +97,8 @@ namespace Atomic.Screens
             Session.Score = data.Score;
             Session.Atoms = data.Atoms;
             Session.Molecules = data.Molecules;
+
+            _nextAtoms.Clear();
             Session.CurrentAtom = Grid.CreateAtom(data.CurrentAtom);
             Session.NextAtom = Grid.CreateAtom(data.NextAtom);
 
@@ -115,7 +139,7 @@ namespace Atomic.Screens
                 if (Grid.SetAtom(gridPos.X, gridPos.Y, Session.CurrentAtom))
                 {
                     Session.CurrentAtom = Session.NextAtom;
-                    Session.NextAtom = Grid.CreateAtom();
+                    Session.NextAtom = GetNextAtom();
                 }
             }
 

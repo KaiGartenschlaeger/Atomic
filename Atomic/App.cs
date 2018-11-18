@@ -36,6 +36,7 @@ namespace Atomic
             _screenManager.Register<StartMenuScreen>();
             _screenManager.Register<SettingsScreen>();
             _screenManager.Register<GameScreen>();
+            _screenManager.Register<GameOverScreen>();
             _screenManager.Register<GameMenuScreen>();
 
             _screenManager.SwitchTo<StartMenuScreen>();

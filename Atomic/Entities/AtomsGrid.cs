@@ -1,6 +1,5 @@
 ﻿using Atomic.Services.SaveGames;
 using Microsoft.Xna.Framework;
-using PureFreak.TileMore;
 using System;
 using System.Collections.Generic;
 
@@ -36,15 +35,12 @@ namespace Atomic.Entities
         /// <summary>
         /// Creates a new atom with given electrons count.
         /// </summary>
-        public Atom CreateAtom(int? electrons = null)
+        public Atom CreateAtom(int electrons)
         {
-            if (electrons.HasValue && (electrons < 0 || electrons > 4))
+            if (electrons < 0 || electrons > 4)
                 throw new ArgumentException("Electrons must be a value between 1 and 4");
 
-            if (!electrons.HasValue)
-                electrons = RandomHelper.Between(new Range<int>(1, 4));
-
-            return new Atom(_contents, electrons.Value);
+            return new Atom(_contents, electrons);
         }
 
         /// <summary>

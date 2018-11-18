@@ -10,6 +10,8 @@ namespace Atomic.Screens
 {
     public class SettingsScreen : Screen
     {
+        // todo: Save settings
+
         #region Fields
 
         private readonly ISoundsManager _soundsManager;
