@@ -40,34 +40,42 @@ namespace Atomic.UI.Elements
                 float x, y;
                 switch (TextAlignment)
                 {
-                    //case TextAlignment.TopLeft:
-                    //    break;
-                    //case TextAlignment.TopCenter:
-                    //    break;
-                    //case TextAlignment.TopRight:
-                    //    break;
-
+                    case TextAlignment.TopLeft:
+                        x = Pos.X;
+                        y = Pos.Y;
+                        break;
+                    case TextAlignment.TopCenter:
+                        x = Pos.X + Width / 2 - _textSize.X / 2;
+                        y = Pos.Y;
+                        break;
+                    case TextAlignment.TopRight:
+                        x = Pos.X + Width - _textSize.X;
+                        y = Pos.Y;
+                        break;
                     case TextAlignment.Left:
                         x = Pos.X;
                         y = Pos.Y + Height / 2 - _textSize.Y / 2;
                         break;
-
                     case TextAlignment.Center:
                         x = Pos.X + Width / 2 - _textSize.X / 2;
                         y = Pos.Y + Height / 2 - _textSize.Y / 2;
                         break;
-
                     case TextAlignment.Right:
                         x = Pos.X + Width - _textSize.X;
                         y = Pos.Y + Height / 2 - _textSize.Y / 2;
                         break;
-
-                    //case TextAlignment.BottomLeft:
-                    //    break;
-                    //case TextAlignment.BottomCenter:
-                    //    break;
-                    //case TextAlignment.BottomRight:
-                    //    break;
+                    case TextAlignment.BottomLeft:
+                        x = Pos.X;
+                        y = Pos.Y + Height - _textSize.Y;
+                        break;
+                    case TextAlignment.BottomCenter:
+                        x = Pos.X + Width / 2 - _textSize.X / 2;
+                        y = Pos.Y + Height - _textSize.Y;
+                        break;
+                    case TextAlignment.BottomRight:
+                        x = Pos.X + Width - _textSize.X;
+                        y = Pos.Y + Height - _textSize.Y;
+                        break;
 
                     default:
                         throw new NotImplementedException();

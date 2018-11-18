@@ -48,44 +48,38 @@ namespace Atomic.Screens
                 l.AutoSize = false;
                 l.Width = 20;
                 l.Height = skin.DefaultFont.Data.LineHeight;
-                l.Text = "-";
+                l.Text = "<";
                 l.TextAlignment = TextAlignment.Right;
 
-                l.Clicked += () =>
-                {
-                    _soundsManager.Volume -= 5;
-                    RefreshVolumeLabel();
-                };
+                l.Clicked += () => { ChangeVolume(-5); };
             });
             _ui.Create<Label>(l =>
             {
                 l.Name = "lblVolume";
                 l.Pos = new Vector2(260, 100);
                 l.AutoSize = false;
-                l.Width = 80;
+                l.Width = (int)skin.DefaultFont.MeasureString("100 ").X;
                 l.Height = skin.DefaultFont.Data.LineHeight;
                 l.TextAlignment = TextAlignment.Center;
 
-                l.Clicked += () =>
+                l.MouseWheel += (delta) =>
                 {
-                    _soundsManager.Volume = 50;
-                    RefreshVolumeLabel();
+                    ChangeVolume(delta < 0 ? -5 : 5);
                 };
             });
             _ui.Create<Label>(l =>
             {
                 l.Name = "lblIncreaseVolume";
-                l.Pos = new Vector2(340, 100);
+                l.Pos = new Vector2(260 + _ui.FindElement("lblVolume").Width, 100);
                 l.AutoSize = false;
                 l.Width = 20;
                 l.Height = skin.DefaultFont.Data.LineHeight;
-                l.Text = "+";
+                l.Text = ">";
                 l.TextAlignment = TextAlignment.Left;
 
                 l.Clicked += () =>
                 {
-                    _soundsManager.Volume += 5;
-                    RefreshVolumeLabel();
+                    ChangeVolume(+5);
                 };
             });
 
@@ -104,6 +98,19 @@ namespace Atomic.Screens
                     Manager.SwitchTo<StartMenuScreen>();
                 };
             });
+        }
+
+        private void ChangeVolume(int offset)
+        {
+            int newValue = MathI.Clamp(_soundsManager.Volume + offset, 0, 100);
+
+            if (_soundsManager.Volume != newValue)
+            {
+                _soundsManager.Volume = (byte)newValue;
+                _soundsManager.PlaySound(SoundName.Blip5);
+
+                RefreshVolumeLabel();
+            }
         }
 
         private void RefreshVolumeLabel()

@@ -23,6 +23,17 @@ namespace Atomic.UI.Elements
             IsHovered = ScreenRect.Contains(mouse.Position);
             if (IsHovered)
             {
+                if (mouse.IsScrollWheelUp())
+                {
+                    OnMouseWheel(mouse.ScrollWheelDelta);
+                    if (MouseWheel != null) MouseWheel(mouse.ScrollWheelDelta);
+                }
+                else if (mouse.IsScrollWheelDown())
+                {
+                    OnMouseWheel(mouse.ScrollWheelDelta);
+                    if (MouseWheel != null) MouseWheel(mouse.ScrollWheelDelta);
+                }
+
                 if (mouse.IsButtonPressed(MouseButton.Left))
                 {
                     OnMouseClick(MouseButton.Left);
@@ -66,9 +77,15 @@ namespace Atomic.UI.Elements
         {
         }
 
+        protected virtual void OnMouseWheel(int delta)
+        {
+        }
+
         public event Action Clicked;
 
         public event Action<MouseButton> MouseClicked;
+
+        public event Action<int> MouseWheel;
 
         public IUIManager Manager
         {
