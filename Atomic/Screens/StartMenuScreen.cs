@@ -67,7 +67,7 @@ namespace Atomic.Screens
 
         protected override void OnEnter()
         {
-            var item = _menu.GetItem("continue_last_game");
+            var item = _menu.GetItem("continue");
             item.IsEnabled = _saveService.HasSaveGame(AppConstants.LastSaveGameFileName);
         }
 
@@ -86,16 +86,18 @@ namespace Atomic.Screens
             var itemNew = _menu.CreateItem("New game");
             itemNew.Clicked += ItemNew_Clicked;
 
-            var itemContinueLast = _menu.CreateItem("Continue last game");
+            var itemContinueLast = _menu.CreateItem("Continue");
             itemContinueLast.Clicked += ItemContinueLast_Clicked;
 
-            var itemHighscore = _menu.CreateItem("Highscore list");
+            var itemHighscore = _menu.CreateItem("Highscores");
+            itemHighscore.Margin = new Padding(0, 15, 0, 0);
 
             var itemSettings = _menu.CreateItem("Settings");
             itemSettings.Clicked += ItemSettings_Clicked;
+            itemSettings.Margin = new Padding(0, 15, 0, 0);
 
             var itemEnd = _menu.CreateItem("Exit");
-            itemEnd.Margin = new Padding(0, 25, 0, 0);
+            itemEnd.Margin = new Padding(0, 45, 0, 0);
             itemEnd.Clicked += ItemEnd_Clicked;
         }
 
