@@ -177,49 +177,49 @@ namespace Atomic.Screens
         {
             GraphicsDevice.Clear(AppColors.WindowBackground);
 
-            Batch.Begin(SpriteSortMode.FrontToBack);
+            batch.Begin(SpriteSortMode.FrontToBack);
 
             // grid
-            GridRenderer.Draw(Batch, new Vector2(AppConstants.GridX, AppConstants.GridY));
+            GridRenderer.Draw(batch, new Vector2(AppConstants.GridX, AppConstants.GridY));
 
-            Batch.End();
+            batch.End();
 
 
-            Batch.Begin();
+            batch.Begin();
 
             var y = AppConstants.GridY + 10;
 
             // time
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), "Time:", AppColors.Descriptions);
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), TimeSpan.FromSeconds(Session.Time).ToString(@"hh\:mm\:ss"), AppColors.Texts);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), "Time:", AppColors.Descriptions);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), TimeSpan.FromSeconds(Session.Time).ToString(@"hh\:mm\:ss"), AppColors.Texts);
             y += AppContents.DefaultFont.Data.LineHeight + 15;
 
             // score
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Score:", AppColors.Descriptions);
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), Session.Score.ToString("n0"), AppColors.Texts);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Score:", AppColors.Descriptions);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), Session.Score.ToString("n0"), AppColors.Texts);
             y += AppContents.DefaultFont.Data.LineHeight + 15;
 
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Atoms:", AppColors.Descriptions);
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), Session.Atoms.ToString("n0"), AppColors.Texts);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Atoms:", AppColors.Descriptions);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), Session.Atoms.ToString("n0"), AppColors.Texts);
             y += AppContents.DefaultFont.Data.LineHeight + 5;
 
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Molecules:", AppColors.Descriptions);
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), Session.Molecules.ToString("n0"), AppColors.Texts);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), $"Molecules:", AppColors.Descriptions);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.WindowWidth - AppConstants.ScreenPadding - 140, y), Session.Molecules.ToString("n0"), AppColors.Texts);
             y += AppContents.DefaultFont.Data.LineHeight + 5;
 
             // current/next atom
             y = AppConstants.WindowHeight - AppConstants.ScreenPadding - AppConstants.PreviewBoxHeight - AppContents.DefaultFont.Data.LineHeight - 8;
 
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), "Current", AppColors.Descriptions);
-            Batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding, y), "Next", AppColors.Descriptions);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight, y), "Current", AppColors.Descriptions);
+            batch.DrawBitmapFont(AppContents.DefaultFont, new Vector2(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding, y), "Next", AppColors.Descriptions);
             y += AppContents.DefaultFont.Data.LineHeight + 8;
 
-            Batch.DrawRect(new Rectangle(AppConstants.GridRight, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
-            Batch.DrawRect(new Rectangle(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
+            batch.DrawRect(new Rectangle(AppConstants.GridRight, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
+            batch.DrawRect(new Rectangle(AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding, y, AppConstants.PreviewBoxWidth, AppConstants.PreviewBoxHeight), 1, AppColors.PreviewBorder);
 
             if (Session.CurrentAtom != null)
             {
-                Session.CurrentAtom.Draw(Batch,
+                Session.CurrentAtom.Draw(batch,
                     pos: new Vector2(
                         AppConstants.GridRight + AppConstants.PreviewBoxWidth / 2,
                         y + AppConstants.PreviewBoxHeight / 2), layerDepth: LayerDepth.Default);
@@ -227,7 +227,7 @@ namespace Atomic.Screens
 
             if (Session.NextAtom != null)
             {
-                Session.NextAtom.Draw(Batch,
+                Session.NextAtom.Draw(batch,
                     pos: new Vector2(
                         AppConstants.GridRight + AppConstants.PreviewBoxWidth + AppConstants.PreviewBoxPadding + AppConstants.PreviewBoxWidth / 2,
                         y + AppConstants.PreviewBoxHeight / 2),
@@ -243,7 +243,7 @@ namespace Atomic.Screens
                 {
                     if (Grid.CanSet(gridPos.X, gridPos.Y, Session.CurrentAtom))
                     {
-                        Session.CurrentAtom.Draw(Batch, new Vector2(
+                        Session.CurrentAtom.Draw(batch, new Vector2(
                             AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
                             AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
                             LayerDepth.Default,
@@ -251,7 +251,7 @@ namespace Atomic.Screens
                     }
                     else
                     {
-                        Session.CurrentAtom.Draw(Batch, new Vector2(
+                        Session.CurrentAtom.Draw(batch, new Vector2(
                             AppConstants.GridX + gridPos.X * Grid.TileSize + Grid.TileSize / 2,
                             AppConstants.GridY + gridPos.Y * Grid.TileSize + Grid.TileSize / 2),
                             LayerDepth.Default,
@@ -260,7 +260,7 @@ namespace Atomic.Screens
                 }
             }
 
-            Batch.End();
+            batch.End();
         }
 
         #endregion
