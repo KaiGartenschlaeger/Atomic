@@ -145,9 +145,20 @@ namespace Atomic.Screens
             _saves.SaveGame(AppConstants.LastSaveGameFilename, data);
         }
 
+        /// <summary>
+        /// Checks after each added atom for game over state
+        /// </summary>
         private bool CheckGameOver()
         {
-            return false;
+            for (int gridX = 0; gridX < Grid.Width; gridX++)
+            {
+                for (int gridY = 0; gridY < Grid.Height; gridY++)
+                {
+                    if (!Grid.HasAtom(gridX, gridY)) return false;
+                }
+            }
+
+            return true;
         }
 
         #endregion
