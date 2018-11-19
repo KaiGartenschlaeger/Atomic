@@ -46,6 +46,11 @@ namespace Atomic.Screens
             Manager.SwitchTo<GameScreen>();
         }
 
+        private void ItemHighscore_Clicked()
+        {
+            Manager.SwitchTo<HighscoreScreen>();
+        }
+
         private void ItemSettings_Clicked()
         {
             Manager.SwitchTo<SettingsScreen>();
@@ -63,7 +68,7 @@ namespace Atomic.Screens
         protected override void OnEnter()
         {
             var item = _menu.GetItem("continue");
-            item.IsEnabled = _saveService.HasSaveGame(AppConstants.LastSaveGameFileName);
+            item.IsEnabled = _saveService.HasSaveGame(AppConstants.LastSaveGameFilename);
         }
 
         protected override void OnStart()
@@ -85,6 +90,7 @@ namespace Atomic.Screens
             itemContinueLast.Clicked += ItemContinueLast_Clicked;
 
             var itemHighscore = _menu.CreateItem("Highscores");
+            itemHighscore.Clicked += ItemHighscore_Clicked;
             itemHighscore.Margin = new Padding(0, 15, 0, 0);
 
             var itemSettings = _menu.CreateItem("Settings");

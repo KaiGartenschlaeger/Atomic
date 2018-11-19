@@ -1,4 +1,5 @@
 ﻿using Atomic.Screens;
+using Atomic.Services.Highscore;
 using Atomic.Services.SaveGames;
 using Atomic.Services.Sounds;
 using Atomic.UI;
@@ -32,12 +33,14 @@ namespace Atomic
             });
 
             _screenManager.Dependencies.AddSingleton<ISaveGameService, XmlSaveGameService>();
+            _screenManager.Dependencies.AddSingleton<IHighscoreService, XmlHighscoreService>();
 
             _screenManager.Register<StartMenuScreen>();
             _screenManager.Register<SettingsScreen>();
+            _screenManager.Register<HighscoreScreen>();
             _screenManager.Register<GameScreen>();
-            _screenManager.Register<GameOverScreen>();
             _screenManager.Register<GameMenuScreen>();
+            _screenManager.Register<GameOverScreen>();
 
             _screenManager.SwitchTo<StartMenuScreen>();
 

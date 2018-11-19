@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Atomic.Services.SaveGames
 {
-    public class BinSaveGameService : ISaveGameService
+    public class BinarySaveGameService : ISaveGameService
     {
         #region Consts
 
@@ -20,7 +20,7 @@ namespace Atomic.Services.SaveGames
 
         #region Constructor
 
-        public BinSaveGameService()
+        public BinarySaveGameService()
         {
             _directoryPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -143,6 +143,11 @@ namespace Atomic.Services.SaveGames
 
                 return result;
             }
+        }
+
+        public void DeleteSaveGame(string filename)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

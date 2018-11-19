@@ -1,4 +1,5 @@
 ﻿using Atomic.Entities;
+using Atomic.Services.Highscore;
 using Atomic.Services.SaveGames;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,19 +16,19 @@ namespace Atomic.Screens
     {
         #region Fields
 
-        private readonly ISaveGameService _saveService;
+        private readonly ISaveGameService _saves;
+        private readonly IHighscoreService _highscores;
         private readonly Stack<int> _nextAtoms;
 
         #endregion
 
         #region Constructor
 
-        public GameScreen(ISaveGameService saveService)
+        public GameScreen(ISaveGameService saveService, IHighscoreService highscores)
         {
-            if (saveService == null)
-                throw new ArgumentNullException(nameof(saveService));
+            _saves = saveService;
+            _highscores = highscores;
 
-            _saveService = saveService;
             _nextAtoms = new Stack<int>();
         }
 
@@ -74,6 +75,15 @@ namespace Atomic.Screens
             return new Point(-1, -1);
         }
 
+        private bool IsGameOver()
+        {
+#if DEBUG
+            return Session.Atoms > 10;
+#else
+            return false;
+#endif
+        }
+
         #endregion
 
         #region Public methods
@@ -91,7 +101,7 @@ namespace Atomic.Screens
 
         public void ContinueLastGame()
         {
-            var data = _saveService.LoadGame(AppConstants.LastSaveGameFileName);
+            var data = _saves.LoadGame(AppConstants.LastSaveGameFilename);
 
             Session.NewGame();
 
@@ -109,8 +119,6 @@ namespace Atomic.Screens
 
         public void SaveGame()
         {
-            if (!Session.GameStarted) return;
-
             var data = new SaveGameData();
             data.ElapsedTime = TimeSpan.FromSeconds(Session.Time);
 
@@ -141,17 +149,12 @@ namespace Atomic.Screens
                 }
             }
 
-            _saveService.SaveGame(AppConstants.LastSaveGameFileName, data);
+            _saves.SaveGame(AppConstants.LastSaveGameFilename, data);
         }
 
         #endregion
 
         #region Screen methods
-
-        protected override void OnEnd()
-        {
-            SaveGame();
-        }
 
         protected override void OnStart()
         {
@@ -172,26 +175,55 @@ namespace Atomic.Screens
 
         protected override void OnInput(GameTime time, int updateCounter)
         {
-            Session.Time += time.ElapsedSeconds();
-
-            if (Session.CurrentAtom != null &&
-                IsMouseOverGrid() &&
-                Mouse.IsButtonPressed(MouseButton.Left))
+            if (IsGameOver())
             {
-                var gridPos = GetMouseGridPos();
-                if (Grid.SetAtom(gridPos.X, gridPos.Y, Session.CurrentAtom))
-                {
-                    Session.CurrentAtom = Session.NextAtom;
-                    Session.NextAtom = GetNextAtom();
-                }
+                HandleGameOver();
             }
+            else
+            {
+                Session.Time += time.ElapsedSeconds();
 
-            if (Keyboard.IsKeyReleased(Keys.Escape))
-                Manager.Activate<GameMenuScreen>();
+                if (Session.CurrentAtom != null &&
+                    IsMouseOverGrid() &&
+                    Mouse.IsButtonPressed(MouseButton.Left))
+                {
+                    var gridPos = GetMouseGridPos();
+                    if (Grid.SetAtom(gridPos.X, gridPos.Y, Session.CurrentAtom))
+                    {
+                        Session.CurrentAtom = Session.NextAtom;
+                        Session.NextAtom = GetNextAtom();
+                    }
+                }
+
+                if (Keyboard.IsKeyReleased(Keys.Escape))
+                    Manager.Activate<GameMenuScreen>();
 
 #if CHEATS_ENABLED
-            HandleCheats();
+                HandleCheats();
 #endif
+            }
+        }
+
+        private void HandleGameOver()
+        {
+            // delete last game
+            _saves.DeleteSaveGame(AppConstants.LastSaveGameFilename);
+
+            // add to highscore list
+            var highscorePlace = _highscores.Add(
+                Environment.UserName,
+                TimeSpan.FromSeconds(Session.Time),
+                Session.Score,
+                Session.Atoms,
+                Session.Molecules);
+
+            GetScreen<HighscoreScreen>().HasChanges = true;
+
+            // switch screen
+            if (highscorePlace != -1 && highscorePlace < AppConstants.TopHighscorePlaces)
+                Manager.SwitchTo<HighscoreScreen>();
+            else
+                Manager.SwitchTo<GameOverScreen>();
         }
 
         private void HandleCheats()

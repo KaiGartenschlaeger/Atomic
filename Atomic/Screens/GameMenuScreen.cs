@@ -47,6 +47,7 @@ namespace Atomic.Screens
 
         private void ItemEnd_Clicked()
         {
+            GetScreen<GameScreen>().SaveGame();
             Game.Exit();
         }
 

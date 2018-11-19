@@ -7,5 +7,7 @@
         void SaveGame(string filename, SaveGameData data);
 
         SaveGameData LoadGame(string filename);
+
+        void DeleteSaveGame(string filename);
     }
 }

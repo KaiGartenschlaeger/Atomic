@@ -2,6 +2,8 @@
 {
     internal static class AppConstants
     {
+        public const string AppDataDirectoryName = "Atomics";
+
         public const int SidebarWidth = 340;
 
         public const int GridTileSize = 64;
@@ -23,6 +25,9 @@
 
         public const int MenuPadding = 8;
 
-        public const string LastSaveGameFileName = "LastGame";
+        public const string LastSaveGameFilename = "LastGame";
+        public const string HighscoreFilename = "Highscores";
+
+        public const int TopHighscorePlaces = 10;
     }
 }

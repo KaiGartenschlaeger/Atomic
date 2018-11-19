@@ -24,7 +24,7 @@ namespace Atomic.Services.SaveGames
         {
             _directoryPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Atomics");
+                AppConstants.AppDataDirectoryName);
 
             if (!Directory.Exists(_directoryPath))
                 Directory.CreateDirectory(_directoryPath);
@@ -59,6 +59,7 @@ namespace Atomic.Services.SaveGames
 
                 writer.WriteStartElement("SaveGame");
                 writer.WriteAttributeString("Version", MaxSupportedVersion.ToString());
+                writer.WriteAttributeString("Date", DateTime.UtcNow.ToString());
 
                 writer.WriteStartElement("State");
                 writer.WriteElementString("Time", data.ElapsedTime.TotalSeconds.ToString());
@@ -157,6 +158,12 @@ namespace Atomic.Services.SaveGames
             }
 
             return result;
+        }
+
+        public void DeleteSaveGame(string filename)
+        {
+            var path = GetFilePath(filename);
+            if (File.Exists(path)) File.Delete(path);
         }
 
         #endregion
