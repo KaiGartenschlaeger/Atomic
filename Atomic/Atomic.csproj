@@ -65,7 +65,6 @@
     <Compile Include="Screens\SettingsScreen.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
     <Compile Include="Services\Highscore\Highscore.cs" />
-    <Compile Include="Services\SaveGames\BinSaveGameService.cs" />
     <Compile Include="Services\Highscore\XmlHighscoreService.cs" />
     <Compile Include="Services\Highscore\IHighscoreService.cs" />
     <Compile Include="Services\Sounds\ISoundsManager.cs" />

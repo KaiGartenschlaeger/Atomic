@@ -22,7 +22,7 @@ namespace Atomic.Services.Highscore
         public XmlHighscoreService()
         {
             _directoryPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 AppConstants.AppDataDirectoryName);
 
             _filePath = Path.Combine(_directoryPath, AppConstants.HighscoreFilename + ".xml");

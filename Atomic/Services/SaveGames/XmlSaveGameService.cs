@@ -8,7 +8,7 @@ namespace Atomic.Services.SaveGames
     {
         #region Consts
 
-        private byte MaxSupportedVersion = 1;
+        private byte MaxSupportedVersion = 2;
 
         #endregion
 
@@ -68,6 +68,8 @@ namespace Atomic.Services.SaveGames
                 writer.WriteElementString("Atoms", data.Atoms.ToString());
                 writer.WriteElementString("Molecules", data.Molecules.ToString());
 
+                writer.WriteElementString("AddedAtoms", data.AddedAtoms.ToString());
+
                 writer.WriteElementString("Current", data.CurrentAtom.ToString());
                 writer.WriteElementString("Next", data.NextAtom.ToString());
                 writer.WriteEndElement();
@@ -124,6 +126,10 @@ namespace Atomic.Services.SaveGames
             result.Score = Convert.ToInt32(nodeState["Score"].InnerText);
             result.Atoms = Convert.ToInt32(nodeState["Atoms"].InnerText);
             result.Molecules = Convert.ToInt32(nodeState["Molecules"].InnerText);
+
+            if (version >= 2)
+                result.AddedAtoms = result.Molecules = Convert.ToInt32(nodeState["AddedAtoms"].InnerText);
+
             result.CurrentAtom = Convert.ToInt32(nodeState["Current"].InnerText);
             result.NextAtom = Convert.ToInt32(nodeState["Next"].InnerText);
 

@@ -10,6 +10,8 @@ namespace Atomic.Services.SaveGames
         public int Atoms { get; set; }
         public int Molecules { get; set; }
 
+        public int AddedAtoms { get; set; }
+
         public int CurrentAtom { get; set; }
         public int NextAtom { get; set; }
 

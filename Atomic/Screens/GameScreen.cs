@@ -75,15 +75,6 @@ namespace Atomic.Screens
             return new Point(-1, -1);
         }
 
-        private bool IsGameOver()
-        {
-#if DEBUG
-            return Session.Atoms > 10;
-#else
-            return false;
-#endif
-        }
-
         #endregion
 
         #region Public methods
@@ -126,6 +117,8 @@ namespace Atomic.Screens
             data.Atoms = Session.Atoms;
             data.Molecules = Session.Molecules;
 
+            data.AddedAtoms = Session.AddedAtoms;
+
             data.CurrentAtom = Session.CurrentAtom.Electrons;
             data.NextAtom = Session.NextAtom.Electrons;
 
@@ -152,6 +145,11 @@ namespace Atomic.Screens
             _saves.SaveGame(AppConstants.LastSaveGameFilename, data);
         }
 
+        private bool CheckGameOver()
+        {
+            return false;
+        }
+
         #endregion
 
         #region Screen methods
@@ -175,7 +173,7 @@ namespace Atomic.Screens
 
         protected override void OnInput(GameTime time, int updateCounter)
         {
-            if (IsGameOver())
+            if (Session.IsGameOver)
             {
                 HandleGameOver();
             }
@@ -190,8 +188,12 @@ namespace Atomic.Screens
                     var gridPos = GetMouseGridPos();
                     if (Grid.SetAtom(gridPos.X, gridPos.Y, Session.CurrentAtom))
                     {
+                        Session.AddedAtoms++;
+
                         Session.CurrentAtom = Session.NextAtom;
                         Session.NextAtom = GetNextAtom();
+
+                        Session.IsGameOver = CheckGameOver();
                     }
                 }
 
