@@ -34,11 +34,6 @@ namespace Atomic.Screens
 
         #region Menu events
 
-        private void Menu_ItemHovered(TextMenuItem item)
-        {
-            _soundsManager.PlaySound(SoundName.Blip5);
-        }
-
         private void ItemNew_Clicked()
         {
             GetScreen<GameScreen>().NewGame();
@@ -76,7 +71,7 @@ namespace Atomic.Screens
             _background = Content.Load<Texture2D>("Background");
 
             _menu = new TextMenu(AppContents.DefaultFont);
-            _menu.ItemHovered += Menu_ItemHovered;
+            _menu.ItemHovered += (item) => { _soundsManager.PlaySound(SoundName.Blip5); };
             _menu.Pos = new Vector2(100, 150);
             _menu.Padding = AppConstants.MenuPadding;
             _menu.Color = AppColors.MenuItems;

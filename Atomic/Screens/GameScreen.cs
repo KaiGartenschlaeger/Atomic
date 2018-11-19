@@ -80,7 +80,8 @@ namespace Atomic.Screens
 
         public void NewGame()
         {
-            Session.Reset();
+            Session.NewGame();
+
             Grid.Clear();
 
             _nextAtoms.Clear();
@@ -92,7 +93,8 @@ namespace Atomic.Screens
         {
             var data = _saveService.LoadGame(AppConstants.LastSaveGameFileName);
 
-            Session.Reset();
+            Session.NewGame();
+
             Session.Time = data.ElapsedTime.TotalSeconds;
             Session.Score = data.Score;
             Session.Atoms = data.Atoms;
@@ -105,14 +107,55 @@ namespace Atomic.Screens
             Grid.FromSaveGame(data.GridData);
         }
 
+        public void SaveGame()
+        {
+            if (!Session.GameStarted) return;
+
+            var data = new SaveGameData();
+            data.ElapsedTime = TimeSpan.FromSeconds(Session.Time);
+
+            data.Score = Session.Score;
+            data.Atoms = Session.Atoms;
+            data.Molecules = Session.Molecules;
+
+            data.CurrentAtom = Session.CurrentAtom.Electrons;
+            data.NextAtom = Session.NextAtom.Electrons;
+
+            data.GridData = new SaveGameGridData[Grid.Width, Grid.Height];
+            for (int gridX = 0; gridX < Grid.Width; gridX++)
+            {
+                for (int gridY = 0; gridY < Grid.Height; gridY++)
+                {
+                    var atom = Grid.GetAtom(gridX, gridY);
+                    if (atom != null)
+                    {
+                        data.GridData[gridX, gridY] = new SaveGameGridData
+                        {
+                            Electrons = atom.Electrons,
+                            ConnectedLeft = atom.LeftConnection != null,
+                            ConnectedTop = atom.TopConnection != null,
+                            ConnectedRight = atom.RightConnection != null,
+                            ConnectedBottom = atom.BottomConnection != null
+                        };
+                    }
+                }
+            }
+
+            _saveService.SaveGame(AppConstants.LastSaveGameFileName, data);
+        }
+
         #endregion
 
         #region Screen methods
 
+        protected override void OnEnd()
+        {
+            SaveGame();
+        }
+
         protected override void OnStart()
         {
             Session = new GameSession();
-
             Grid = new AtomsGrid(AppContents, Session, AppConstants.GridTileSize, AppConstants.GridWidth, AppConstants.GridHeight);
             GridRenderer = new GridRenderer(Grid, Session);
         }

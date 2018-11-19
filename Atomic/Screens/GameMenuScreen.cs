@@ -1,4 +1,5 @@
 ﻿using Atomic.Services.SaveGames;
+using Atomic.Services.Sounds;
 using Atomic.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,17 +15,19 @@ namespace Atomic.Screens
 
         private TextMenu _menu;
         private readonly ISaveGameService _saveService;
+        private readonly ISoundsManager _soundsManager;
 
         #endregion
 
         #region Constructor
 
-        public GameMenuScreen(ISaveGameService saveService)
+        public GameMenuScreen(ISaveGameService saveService, ISoundsManager soundsManager)
         {
             if (saveService == null)
                 throw new ArgumentNullException(nameof(saveService));
 
             _saveService = saveService;
+            _soundsManager = soundsManager;
         }
 
         #endregion
@@ -36,49 +39,9 @@ namespace Atomic.Screens
             Manager.Deactivate<GameMenuScreen>();
         }
 
-        private void ItemSave_Clicked()
-        {
-            var gs = GetScreen<GameScreen>();
-            var session = gs.Session;
-            var grid = gs.Grid;
-
-            var data = new SaveGameData();
-            data.ElapsedTime = TimeSpan.FromSeconds(session.Time);
-
-            data.Score = session.Score;
-            data.Atoms = session.Atoms;
-            data.Molecules = session.Molecules;
-
-            data.CurrentAtom = session.CurrentAtom.Electrons;
-            data.NextAtom = session.NextAtom.Electrons;
-
-            data.GridData = new SaveGameGridData[grid.Width, grid.Height];
-            for (int gridX = 0; gridX < grid.Width; gridX++)
-            {
-                for (int gridY = 0; gridY < grid.Height; gridY++)
-                {
-                    var atom = grid.GetAtom(gridX, gridY);
-                    if (atom != null)
-                    {
-                        data.GridData[gridX, gridY] = new SaveGameGridData
-                        {
-                            Electrons = atom.Electrons,
-                            ConnectedLeft = atom.LeftConnection != null,
-                            ConnectedTop = atom.TopConnection != null,
-                            ConnectedRight = atom.RightConnection != null,
-                            ConnectedBottom = atom.BottomConnection != null
-                        };
-                    }
-                }
-            }
-
-            _saveService.SaveGame(AppConstants.LastSaveGameFileName, data);
-
-            Manager.Deactivate<GameMenuScreen>();
-        }
-
         private void ItemCancel_Clicked()
         {
+            GetScreen<GameScreen>().SaveGame();
             Manager.SwitchTo<StartMenuScreen>();
         }
 
@@ -94,6 +57,7 @@ namespace Atomic.Screens
         protected override void OnStart()
         {
             _menu = new TextMenu(AppContents.DefaultFont);
+            _menu.ItemHovered += (item) => { _soundsManager.PlaySound(SoundName.Blip5); };
             _menu.Pos = new Vector2(100, 150);
             _menu.Padding = AppConstants.MenuPadding;
             _menu.Color = AppColors.MenuItems;
@@ -102,9 +66,6 @@ namespace Atomic.Screens
 
             var itemContinue = _menu.CreateItem("Continue", "ContinueGame");
             itemContinue.Clicked += ItemContinue_Clicked;
-
-            var itemSave = _menu.CreateItem("Save", "Save");
-            itemSave.Clicked += ItemSave_Clicked;
 
             var itemCancel = _menu.CreateItem("Cancel", "Cancel");
             itemCancel.Clicked += ItemCancel_Clicked;

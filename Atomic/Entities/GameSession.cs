@@ -2,12 +2,12 @@
 {
     public class GameSession
     {
-        #region Constructor
+        #region Methods
 
-        public void Reset()
+        public void NewGame()
         {
+            GameStarted = true;
             Time = 0d;
-
             Score = 0;
             Atoms = 0;
             Molecules = 0;
@@ -16,6 +16,8 @@
         #endregion
 
         #region Properties
+
+        public bool GameStarted { get; set; }
 
         public double Time { get; set; }
 
