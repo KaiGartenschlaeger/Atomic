@@ -21,8 +21,9 @@ namespace Atomic.Services.Highscore
 
         public XmlHighscoreService()
         {
+            // use common documents folder to have the highscore list shared for all local user accounts
             _directoryPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
                 AppConstants.AppDataDirectoryName);
 
             _filePath = Path.Combine(_directoryPath, AppConstants.HighscoreFilename + ".xml");
