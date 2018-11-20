@@ -73,7 +73,7 @@ namespace Atomic.Screens
 
         protected override void OnStart()
         {
-            _background = Content.Load<Texture2D>("Background");
+            _background = Content.Load<Texture2D>("Textures/Background");
 
             _menu = new TextMenu(AppContents.DefaultFont);
             _menu.ItemHovered += (item) => { _soundsManager.PlaySound(SoundName.Blip5); };

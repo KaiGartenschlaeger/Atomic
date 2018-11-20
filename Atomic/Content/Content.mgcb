@@ -15,17 +15,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ArialRounded18pt.fnt
-/importer:ShoeBoxTxtFontImporter
-/processor:BitmapFontProcessor
-/build:ArialRounded18pt.fnt
+#begin Sounds/Blip5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Blip5.wav
 
-#begin Atoms.xml
+#begin Textures/Atoms.xml
 /importer:TexturePackerXmlImporter
 /processor:TextureAtlasProcessor
-/build:Atoms.xml
+/build:Textures/Atoms.xml
 
-#begin Background.png
+#begin Textures/Background.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,11 +36,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Background.png
+/build:Textures/Background.png
 
-#begin Sounds/Blip5.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/Blip5.wav
+#begin Fonts/ArialRounded18pt.fnt
+/importer:ShoeBoxTxtFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/ArialRounded18pt.fnt
 
