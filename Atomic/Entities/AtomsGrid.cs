@@ -167,7 +167,7 @@ namespace Atomic.Entities
             _atoms[gridX, gridY] = null;
         }
 
-        private bool CanResolveElectron(int gridX, int gridY)
+        private bool HasElectron(int gridX, int gridY)
         {
             var atom = GetAtom(gridX, gridY);
             if (atom != null)
@@ -188,10 +188,10 @@ namespace Atomic.Entities
                 return false;
 
             //var electronsToResolve = atom.Electrons;
-            //if (CanResolveElectron(gridX - 1, gridY)) electronsToResolve--;
-            //if (CanResolveElectron(gridX + 1, gridY)) electronsToResolve--;
-            //if (CanResolveElectron(gridX, gridY - 1)) electronsToResolve--;
-            //if (CanResolveElectron(gridX, gridY + 1)) electronsToResolve--;
+            //if (HasElectron(gridX - 1, gridY)) electronsToResolve--;
+            //if (HasElectron(gridX + 1, gridY)) electronsToResolve--;
+            //if (HasElectron(gridX, gridY - 1)) electronsToResolve--;
+            //if (HasElectron(gridX, gridY + 1)) electronsToResolve--;
             //return electronsToResolve < 1;
 
             return true;
