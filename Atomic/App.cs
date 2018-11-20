@@ -1,6 +1,7 @@
 ﻿using Atomic.Screens;
 using Atomic.Services.Highscore;
 using Atomic.Services.SaveGames;
+using Atomic.Services.Settings;
 using Atomic.Services.Sounds;
 using Atomic.UI;
 using Atomic.UI.Elements;
@@ -24,14 +25,8 @@ namespace Atomic
         {
             Components.Add(_screenManager);
 
-            _screenManager.Dependencies.AddSingleton<ISoundsManager>(r =>
-            {
-                var result = new SoundsManager();
-                result.Volume = 50;
-
-                return result;
-            });
-
+            _screenManager.Dependencies.AddSingleton<ISoundsManager, SoundsManager>();
+            _screenManager.Dependencies.AddSingleton<ISettingsService, XmlSettingsService>();
             _screenManager.Dependencies.AddSingleton<ISaveGameService, XmlSaveGameService>();
             _screenManager.Dependencies.AddSingleton<IHighscoreService, XmlHighscoreService>();
 

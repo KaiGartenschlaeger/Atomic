@@ -67,6 +67,10 @@
     <Compile Include="Services\Highscore\Highscore.cs" />
     <Compile Include="Services\Highscore\XmlHighscoreService.cs" />
     <Compile Include="Services\Highscore\IHighscoreService.cs" />
+    <Compile Include="Services\Settings\Entities\AudioSettingsElement.cs" />
+    <Compile Include="Services\Settings\ISettingsService.cs" />
+    <Compile Include="Services\Settings\Entities\SettingsElement.cs" />
+    <Compile Include="Services\Settings\XmlSettingsService.cs" />
     <Compile Include="Services\Sounds\ISoundsManager.cs" />
     <Compile Include="Services\SaveGames\SaveGameData.cs" />
     <Compile Include="Services\SaveGames\SaveGameGridData.cs" />

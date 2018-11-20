@@ -1,8 +1,10 @@
-﻿using Atomic.Services.Sounds;
+﻿using Atomic.Services.Settings;
+using Atomic.Services.Sounds;
 using Atomic.UI;
 using Atomic.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using PureFreak.TileMore;
 using PureFreak.TileMore.Screens;
 
@@ -10,20 +12,21 @@ namespace Atomic.Screens
 {
     public class SettingsScreen : Screen
     {
-        // todo: Save settings
-
         #region Fields
 
-        private readonly ISoundsManager _soundsManager;
+        private readonly ISoundsManager _sounds;
+        private readonly ISettingsService _settings;
+
         private IUIManager _ui;
 
         #endregion
 
         #region Constructor
 
-        public SettingsScreen(ISoundsManager soundsManager)
+        public SettingsScreen(ISoundsManager sounds, ISettingsService settings)
         {
-            _soundsManager = soundsManager;
+            _sounds = sounds;
+            _settings = settings;
         }
 
         #endregion
@@ -32,10 +35,24 @@ namespace Atomic.Screens
 
         protected override void OnStart()
         {
+            InitSettings();
+            InitUI();
+        }
+
+        private void InitSettings()
+        {
+            _settings.Load();
+
+            _sounds.Volume = _settings.Settings.Audio.EffectsVolume;
+        }
+
+        private void InitUI()
+        {
             var skin = Store.Get<UISkin>("UISkin");
             _ui = new UIManager(skin);
             //_ui.DebugRects = true;
 
+            // effects volume
             _ui.Create<Label>(l =>
             {
                 l.Text = "Volume:";
@@ -55,6 +72,7 @@ namespace Atomic.Screens
 
                 l.Clicked += () => { ChangeVolume(-5); };
             });
+
             _ui.Create<Label>(l =>
             {
                 l.Name = "lblVolume";
@@ -69,6 +87,7 @@ namespace Atomic.Screens
                     ChangeVolume(delta < 0 ? -5 : 5);
                 };
             });
+
             _ui.Create<Label>(l =>
             {
                 l.Name = "lblIncreaseVolume";
@@ -85,6 +104,7 @@ namespace Atomic.Screens
                 };
             });
 
+            // cancel button
             _ui.Create<Label>(l =>
             {
                 l.Name = "lblCancel";
@@ -102,14 +122,21 @@ namespace Atomic.Screens
             });
         }
 
+        protected override void OnEnd()
+        {
+            _settings.Save();
+        }
+
         private void ChangeVolume(int offset)
         {
-            int newValue = MathI.Clamp(_soundsManager.Volume + offset, 0, 100);
+            int newValue = MathI.Clamp(_sounds.Volume + offset, 0, 100);
 
-            if (_soundsManager.Volume != newValue)
+            if (_sounds.Volume != newValue)
             {
-                _soundsManager.Volume = (byte)newValue;
-                _soundsManager.PlaySound(SoundName.Blip5);
+                _sounds.Volume = (byte)newValue;
+                _sounds.PlaySound(SoundName.Blip5);
+
+                _settings.Settings.Audio.EffectsVolume = _sounds.Volume;
 
                 RefreshVolumeLabel();
             }
@@ -118,7 +145,7 @@ namespace Atomic.Screens
         private void RefreshVolumeLabel()
         {
             var lblVolume = (Label)_ui.FindElement("lblVolume");
-            lblVolume.Text = _soundsManager.Volume.ToString();
+            lblVolume.Text = _sounds.Volume.ToString();
         }
 
         protected override void OnEnter()
@@ -128,6 +155,9 @@ namespace Atomic.Screens
 
         protected override void OnUpdate(GameTime time, int updateCounter)
         {
+            if (Keyboard.IsKeyPressed(Keys.Escape))
+                Manager.SwitchTo<StartMenuScreen>();
+
             _ui.Update(time, Mouse, Keyboard);
         }
 
