@@ -24,12 +24,12 @@ namespace Atomic
         {
             Components.Add(_screenManager);
 
-            ISoundsManager soundsManager = new SoundsManager();
-            soundsManager.Volume = 50;
-
             _screenManager.Dependencies.AddSingleton<ISoundsManager>(r =>
             {
-                return soundsManager;
+                var result = new SoundsManager();
+                result.Volume = 50;
+
+                return result;
             });
 
             _screenManager.Dependencies.AddSingleton<ISaveGameService, XmlSaveGameService>();
