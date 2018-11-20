@@ -10,19 +10,20 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\TileMore\PureFreak.TileMore.Content\bin\Debug\PureFreak.TileMore.Content.dll
+/reference:..\..\packages\PureFreak.TileMore.1.0.4\lib\net461\PureFreak.TileMore.dll
+/reference:..\..\packages\PureFreak.TileMore.Content.1.0.2\lib\net461\PureFreak.TileMore.Content.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin Atoms.xml
-/importer:TexturePackerXmlImporter
-/processor:TextureAtlasProcessor
-/build:Atoms.xml
 
 #begin ArialRounded18pt.fnt
 /importer:ShoeBoxTxtFontImporter
 /processor:BitmapFontProcessor
 /build:ArialRounded18pt.fnt
+
+#begin Atoms.xml
+/importer:TexturePackerXmlImporter
+/processor:TextureAtlasProcessor
+/build:Atoms.xml
 
 #begin Background.png
 /importer:TextureImporter
